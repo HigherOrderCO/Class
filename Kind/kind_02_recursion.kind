@@ -12,11 +12,11 @@ add(a: Nat, b: Nat): Nat // addition
 
   ?a
 
-Mul(a: Nat, b: Nat): Nat // multiplication
+mul(a: Nat, b: Nat): Nat // multiplication
   
   ?m
 
-Sub(a: Nat, b: Nat): Nat //  ubtraction
+sub(a: Nat, b: Nat): Nat //  ubtraction
 
   ?s
 
