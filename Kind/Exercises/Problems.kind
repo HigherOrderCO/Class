@@ -1,0 +1,668 @@
+// How to use this file:
+// 1. Clone Kind's repo:     git clone https://github.com/uwu-tech/kind
+// 2. Create a dir for you:  mkdir Kind/base/User/YourName
+// 3. Copy that file there:  cp Kind/base/Problems.kind Kind/base/User/YourName
+// 4. Open, uncomment a problem and solve it
+// 5. Send a PR if you want!
+// If you need help, read the tutorial on Kind/THEOREMS.md, or ask on Telegram.
+// Answers: https://github.com/uwu-tech/Kind/blob/master/base/User/MaiaVictor/Problems.kind
+
+// -----------------------------------------------------------------------------
+
+// ::::::::::::::
+// :: Programs ::
+// ::::::::::::::
+
+// Returs true if both inputs are true
+Problems.p0(a: Bool, b: Bool): Bool
+	case a
+	{
+		true: case b
+					{
+						true: Bool.true
+						false: Bool.false
+					}
+		false: Bool.false
+	}
+
+// Returs true if any input is true
+Problems.p1(a: Bool, b: Bool): Bool
+	case a
+	{
+		true: Bool.true
+		false: case b
+					 {
+						 true: Bool.true
+						 false: Bool.false
+					 }
+	}
+
+// Returs true if both inputs are identical
+Problems.p2(a: Bool, b: Bool): Bool
+	case a
+		{
+			true: case b
+			{
+				true: a
+				false: b
+			}
+			false: case b
+						 {
+							 true: a
+							 false: Bool.true
+						 }
+		}
+
+Problems.p2a(a: Bool, b: Bool): Bool
+	case a b 
+	{
+		false false: Bool.true
+		false true: Bool.false
+		true false: Bool.false
+		true true: Bool.true
+	}
+
+// Returns the first element of a pair
+ Problems.p3<A: Type, B: Type>(pair: Pair<A,B>): A
+  case pair
+	{
+		new: pair.fst
+	}
+// Returns the second element of a pair
+Problems.p4<A: Type, B: Type>(pair: Pair<A,B>): B
+ case pair
+ {
+	 new: pair.snd
+ }
+
+
+
+
+// Inverses the order of the elements of a pair
+Problems.p5<A: Type, B: Type>(pair: Pair<A,B>): Pair<B,A>
+	case pair
+	{
+		new: {pair.snd, pair.fst}
+	}
+
+// Problems:_
+// Problems.p5!!({5, 8})
+
+// Applies a function to both elements of a Pair
+Problems.p6<A: Type, B: Type>(fn: A -> B, pair: Pair<A,A>): Pair<B,B>
+	case pair
+	{
+		new: {fn(pair.fst), fn(pair.snd)}
+	}
+
+// Doubles a number
+Problems.p7(n: Nat): Nat
+	case n
+	{
+		zero: 0
+		succ: Nat.succ(Nat.succ(Problems.p7(n.pred)))
+	}
+
+
+// Halves a number, rounding down
+Problems.p8(n: Nat): Nat
+	case n
+	{
+		zero: 0
+		succ: case n.pred
+					{
+						zero: 0
+						succ: Nat.succ(Problems.p8(n.pred.pred))
+					}
+	}
+
+Problems.p8(n:Nat): Nat
+    case n
+    {
+        zero: 0
+        succ: Nat.succ(Problems.p7(n.pred))
+    }
+
+// Adds two numbers
+Problems.p9(a: Nat, b: Nat): Nat
+	case b
+	{
+		zero: a
+		succ: Problems.p9(Nat.succ(a), b.pred)
+	} 
+
+
+// Subtracts two numbers
+Problems.p10(a: Nat, b: Nat): Nat
+	case a
+	{
+		zero: 0
+		succ: case b
+				  {
+					zero: a
+					succ: Problems.p10(a.pred, b.pred)
+					}
+	}
+	
+	//Divides two numbers
+
+// Div(a: Nat, b: Nat): Nat
+// 	case a
+// 	{
+// 		zero: 0
+// 		succ: case b
+// 					{
+// 						zero: 0
+// 					  succ: Nat.succ(Div(a.pred, Problems.p10(a, b)))
+// 					}
+// 	}
+
+// Div(6, 3)
+// 	succ: 5
+// 				succ: Nat.succ(3)))
+// 							succ: Nat.succ(2))
+// 										succ: Nat.succ(1))
+// 																	succ: Nat.succ(0))
+// 																								 succ: 0
+
+
+
+// Problems:_
+// 	Div(8, 4)
+
+// Multiplies two numbers
+Problems.p11(a: Nat, b: Nat): Nat
+	case a
+	{
+		zero: 0
+		succ: case b
+					{
+						zero: 0
+					  succ: Problems.p9(a, Problems.p11(a, b.pred))
+					}
+	}
+
+// Returns true if a < b
+Problems.p12(a: Nat, b: Nat): Bool
+	case a b
+	{
+		zero zero: Bool.false
+		zero succ: Bool.true
+		succ zero: Bool.false
+		succ succ: Problems.p12(a.pred, b.pred)
+	}
+
+// Returns true if a == b
+Problems.p13(a: Nat, b: Nat): Bool
+case a b
+{
+	zero zero: Bool.true
+	zero succ: Bool.false
+	succ zero: Bool.false
+	succ succ: Problems.p13(a.pred, b.pred)
+}
+
+// Returns the first element of a List
+//Problems.p14<A: Type>(xs: List<A>): Maybe<A>
+//  ?a
+
+Problems.p14<A: Type>(xs: List<A>): Maybe<A>
+  case xs
+		{
+			nil: none
+			cons: some(xs.head)
+		}
+
+// Returns the list without the first element
+Problems.p15<A: Type>(xs: List<A>): List<A>
+  case xs
+		{
+			nil: []
+			cons: xs.tail
+		}
+
+// Returns the length of a list
+Problems.p16<A: Type>(xs: List<A>): Nat
+  case xs
+	{
+		nil: 0
+		cons: Nat.succ(Problems.p16!(xs.tail))
+	}
+
+//Concatenates two lists
+Problems.p17<A: Type>(xs: List<A>, ys: List<A>): List<A>
+	case xs
+	{
+		nil: ys
+		cons: List.cons!(xs.head, Problems.p17<A>(xs.tail, ys))
+	}
+
+// Problems:_
+// List.show!(Nat.show, Problems.p17!([1, 2, 3], [4, 5, 6]))
+// Problems.p17([1 2 3], [4 5 6])
+// 	cons: Problems.p17([2 3], [1 4 5 6])
+// 				cons: Problems.p17([3], [2 1 4 5 6])
+// 							cons: Problems.p17([nil], [3 2 1 4 5 6])
+// 										nil: [3 2 1 4 5 6]
+
+//  Problems.p17([a, b, c], [d, e, f])
+// 	cons: Problems.p17([b, c], List.cons!(xs.head, ys))
+// 				cons: Problems.p17([c], List.cons!(xs.head, ys))
+// 							cons: List.cons!(xs.head, ys)
+// 										nil: List.cons!(xs.head,ys)
+
+// Applies a function to all elements of a list
+Problems.p18<A: Type, B: Type>(fn: A -> B, xs: List<A>): List<B>
+  case xs
+	{
+		nil: []
+		cons: List.cons<B>(fn(xs.head), Problems.p18!!(fn, xs.tail))
+	}
+
+Inc(a: Nat): Nat
+Nat.succ(a)
+
+
+
+// Problems.p18(Inc, [5, 9, 37])
+// 	cons: Problems.p18(Inc, List.cons(Inc(5), [9, 37]))
+// 				cons: Problems.p18(Inc, List.cons(Inc(Inc(5), [9, 37])))
+
+
+// Problems.p18(Inc, [5, 9, 37])
+// 	case xs
+// 	{
+// 		nil:[]
+// 		cons: List.cons(Inc(5), Problems.p18(Inc, [9, 37])
+// 														case xs
+// 														{
+// 															nil: []
+// 															cons: List.cons(Inc(9), Problems.p18(Inc, [37]))
+// 																											case xs
+// 																											{
+// 																												nil: []
+// 																												cons: List.cons(Inc(37), Problems.p18(Inc, []))
+// 																																								 case xs
+// 																																								 {
+// 																																									 nil: []
+// 																																								 }
+// 																											}
+																											
+// 														}
+// 	}
+
+// Returns the same list, with the order reversed
+// Problems.p19<A: Type>(xs: List<A>): List<A>
+// 	case xs
+// 	{
+// 		nil: []
+// 		cons: case xs.tail
+// 					{
+// 					nil: xs
+// 					cons: Problems.p19!(List.cons!(xs.tail.head, xs.tail.tail))
+// 					}
+// 	}
+
+// Problems:_
+// List.show!(Nat.show, Problems.p19!!([39, 117, 9999]))
+
+// Problems.p19([1, 2, 3])
+// 	cons: Problems.p19(List.cons(2, [3])
+// 				cons: Problems.p19(List.cons(3, []))
+// 							cons: [3, []]
+
+
+
+Problems.p19.go<A: Type>(xs: List<A>, ys: List<A>): List<A>
+	case xs
+	{
+		nil: ys
+		cons: Problems.p19.go<A>(xs.tail, List.cons!(xs.head, ys))
+	}
+
+Problems.p19<A: Type>(xs: List<A>): List<A>
+	Problems.p19.go<A>(xs, [])
+
+// Problems.p19<A:Type>(xs: List<A>): List<A>
+// 	case xs
+// 	{
+// 		nil: []
+// 		cons: Problems.p17<A>(List.cons!(xs.head, xs.tail), [])
+// 	}
+
+// Problems:_
+// List.show!(Nat.show, Problems.p19!([1, 2, 3]))
+
+
+// Returns pairs of the elements of the 2 input lists on the same index
+// Ex: Problems.p20!!([1,2], ["a","b"]) == [{1,"a"},{2,"b"}]
+Problems.p20<A: Type, B: Type>(xs: List<A>, ys: List<B>): List<Pair<A,B>>
+	case xs ys
+		{
+			cons cons: List.cons!(Pair.new!!(xs.head, ys.head), Problems.p20<A, B>(xs.tail, ys.tail))
+		}default []
+	
+	// Problems:_
+	// 	List.show!(Pair.show!!(Nat.show, (x) x), Problems.p20!!([1, 2, 3, 4], ["a", "b", "c"]))
+
+// Returns the smallest element of a List
+ Problems.p21(xs: List<Nat>): Nat
+	case xs
+	{
+		nil: 0
+		cons: case xs.tail
+					{
+						nil: xs.head
+						cons: Problems.p21(List.cons!(Problems.p21go(xs.head, xs.tail.head), xs.tail.tail))
+					}
+	}
+
+	Problems.p21go(a: Nat, b: Nat): Nat
+		case a b
+		{
+			succ succ: Nat.succ(Problems.p21go(a.pred, b.pred))
+		}default 0
+
+//Returns the same list without the smallest element
+// Problems.p22(xs: List<Nat>): List<Nat>
+// 	case xs
+// 	{
+// 		nil: []
+// 		cons: List.cons!(Problems.p22go(xs.head, xs.tail), Problems.p21go())
+// 	}
+
+//Achei que ia precisar disso mas não precisa, fica aqui de reliquia, retorna  o maior
+Problems.p22go(a: Nat, b: Nat): Nat
+		case a b
+		{
+			zero succ: Problems.p9(a, b)
+			succ zero: Problems.p9(a, b)
+			succ succ: Nat.succ(Problems.p22go(a.pred, b.pred))
+		}default 0
+
+// Problems.p22go2(a: Nat, b: Nat): Bool
+
+// Smallest(a: Bool, b: List<Nat>, c: Nat): List<Nat>
+// 	case a
+// 	{
+// 		false: case xs
+// 					 {
+// 						 nil: []
+// 						 cons: case xs.tail
+// 						 			 {
+// 											nil: List.cons!(xs.head, xs.tail)
+// 											cons: Smallest(List.cons!(xs.tail.head, xs.tail.tail))
+// 									 }
+// 					 }
+// 		true: case xs.tail
+// 					{
+// 						nil: List.cons!(xs.head, xs.tail)
+// 						cons: List.cons!(xs.tail.head, xs.tail.tail)
+// 					}
+// 	}
+
+Problems.p22(xs: List<Nat>): List<Nat>
+	let sml = Problems.p21(xs)
+	case xs
+	{
+		nil: []
+		cons:
+			if sml =? xs.head then
+				xs.tail
+			else
+				List.cons<Nat>(xs.head, Problems.p22(xs.tail))
+	}
+
+// Problems:_
+// 	List.show!(Nat.show, Smallest1([4, 3, 2, 2, 3, 7, 34, 42]))
+
+// Ascend(xs: List<Nat>, ys: List<Nat>): List<Nat>
+// 	case xs
+// 	{
+// 		nil: ys
+// 		cons: case xs.tail
+// 					{
+// 						nil: xs
+// 						cons: Ascend(List.cons!(Problems.p21go(xs.head, xs.tail.head), xs.tail.tail), xs.tail)
+// 					}
+// 	}
+
+
+
+//Rep(xs: List<Nat>): List<Nat>
+
+// Ascend([3, 1, 2], [])
+// 	cons:Ascen(List.cons(Problems.p22go(xs.head, xs.tail.head)), xs.tail.tail))
+
+
+
+// Problems:_
+
+// 	 List.show!(Nat.show, Smallest1([1, 2, 637, 649, 0, 17]))
+// //Problems.p13(Problems.p21, 5):
+//Problems.p22go(29, 27)
+
+// Returns the same list, in ascending order
+//Problems.p23(xs: List<Nat>): List<Nat>
+Ascend(xs: List<Nat>): List<Nat>
+	case xs
+		{
+			nil: []
+			cons: List.cons!(Problems.p21(xs), Ascend(Problems.p22(xs)))
+		}
+
+Problems:_
+	List.show!(Nat.show, Ascend([1, 0, 637, 649, 2, 17, 5, 9, 673]))
+// -----------------------------------------------------------------------------
+
+// ::::::::::::::
+// :: Theorems ::
+// ::::::::::::::
+
+// Note: these problems use functions from the base libs, NOT the ones above
+
+//Problems.t0: true == true
+//  ?a
+
+//Problems.t1(a: Bool): Bool.and(false, a) == false
+//  ?a
+
+//Problems.t2(a: Bool): Bool.and(a, false) == false
+//  ?a
+
+//Problems.t3(a: Bool): Bool.or(true, a) == true
+//  ?a
+
+//Problems.t4(a: Bool): Bool.or(a, true) == true
+//  ?a
+
+//Problems.t5(a: Bool): Bool.eql(a, a) == true
+//  ?a
+
+//Problems.t6(a: Bool): Bool.not(Bool.not(a)) == a
+//  ?a
+
+//Problems.t7(a: Bool, b: Bool): Bool.not(Bool.and(a,b)) == Bool.or(Bool.not(a), Bool.not(b))
+//  ?a
+
+//Problems.t8(a: Bool, b: Bool): Bool.not(Bool.or(a,b)) == Bool.and(Bool.not(a), Bool.not(b))
+//  ?a
+
+//Problems.t9(a: Pair<Nat,Nat>): Pair.new<Nat,Nat>(Pair.fst<Nat,Nat>(a), Pair.snd<Nat,Nat>(a)) == a
+//  ?a
+
+//Problems.t10(a: Pair<Nat,Nat>): Pair.swap<Nat,Nat>(Pair.swap<Nat,Nat>(a)) == a
+//  ?a
+
+//Problems.t11(n: Nat): Nat.same(n) == n
+//  ?a
+
+//Problems.t12(n: Nat): Nat.half(Nat.double(n)) == n
+//  ?a
+
+//Problems.t13(n: Nat): Nat.add(0,n) == n
+//  ?a
+
+//Problems.t14(n: Nat): Nat.add(n,0) == n
+//  ?a
+
+//Problems.t15(n: Nat, m: Nat): Nat.add(Nat.succ(n),m) == Nat.succ(Nat.add(n,m))
+//  ?a
+  
+//Problems.t16(n: Nat, m: Nat): Nat.add(n,Nat.succ(m)) == Nat.succ(Nat.add(n,m))
+//  ?a
+
+//Problems.t17(n: Nat, m: Nat): Nat.add(n, m) == Nat.add(m, n)
+//  ?a
+
+//Problems.t18(n: Nat): Nat.add(n,n) == Nat.double(n)
+//  ?a
+
+//Problems.t19(n: Nat): Nat.ltn(n, Nat.succ(n)) == true
+//  ?a
+
+//Problems.t20(n: Nat): Nat.gtn(Nat.succ(n), n) == true
+//  ?a
+
+//Problems.t21(n: Nat): Nat.sub(n,n) == 0
+//  ?a
+
+//Problems.t22(n: Nat, e: n == 1): Nat.succ(n) == 2
+//  ?a
+
+//Problems.t23(n: Nat, m: Nat, e: Nat.eql(n,m) == true): n == m
+//  ?a
+
+//Problems.t24(xs: List<Nat>): Nat.gtn(List.length<Nat>(List.cons<Nat>(1,xs)),0) == true
+//  ?a
+
+//Problems.t25(xs: List<Nat>): List.map<Nat,Nat>((x) x, xs) == xs
+//  ?a
+
+//Problems.t26(xs: List<Nat>, ys: List<Nat>): Nat.add(List.length<Nat>(xs), List.length<Nat>(ys)) == List.length<Nat>(List.concat<Nat>(xs,ys))
+//  ?a
+
+//Problems.t27(xs: List<Nat>): List.reverse<Nat>(List.reverse<Nat>(xs)) == xs
+//  ?a
+
+//Problems.t28: true != false
+//  ?a
+
+//Problems.t29: 3 != 2
+//  ?a
+
+//Problems.t30(a: Bool): Bool.or(true, a) != false
+//  ?a
+
+//Problems.t31(a: Bool): Bool.or(a, true) != false
+//  ?a
+
+//Problems.t32(a: Bool): Bool.and(false, a) != true
+//  ?a
+
+//Problems.t33(a: Bool): Bool.and(a, false) != true
+//  ?a
+
+//Problems.t34(a: Nat, b: Nat, e: a == b): b == a
+//  ?a
+
+//Problems.t35(a: Nat, b: Nat, c: Nat, e0: a == b, e1: b == c): a == c
+//  ?a
+
+//Problems.t36(a: Nat, P: Nat -> Type, p: P(a)): P(Nat.same(a))
+//  ?a
+
+
+
+
+// {3, 5}
+
+// {inc(pair.fst, inc(pair.snd)}
+
+// Map(fn: A -> B, Pair<A, A>): Pair<B, B>
+// case pair
+// 	new:
+
+
+// Map(to_string, {3, 5})
+// 	new: {to_string(3), to_string(5)}
+
+// {"3", "5"}
+
+
+// type Naturais
+// {
+// 	null
+// 	pos(ant: Naturais)
+// }
+
+// dobrar(d: Naturais): Naturais
+// 	case d:
+// 	null: Naturais.null
+// 	pos: Naturais.pos(Naturais.pos(dobrar(d.ant)))
+
+
+// dobrar(3)
+// case 3:
+// {
+// 	null: Naturais.null
+// 	pos: Naturais.pos(Naturais.pos(dobrar(2))
+// 																 case 2:
+// 																 {
+// 																	 null: Naturais.null
+// 																	 pos: Naturais.pos(Naturais.pos(dobrar(1))
+// 																	 																case 1
+// 																																	 {
+// 																																		 null: Naturais.null
+// 																																		 pos: Naturais.pos(Naturais.pos(dobrar(0))
+// 																																		 																case 0
+// 																																																		 {
+// 																																																			 null: Naturais.null
+// 																																																			 pos: 
+// 																																																		 }
+// 																																	 }
+// 																 }
+// }
+
+
+
+
+
+
+Problems.p16<A: Type>(xs: List<A>): Nat
+	case xs
+	{
+		nil: 4
+		cons: Nat.succ(Problems.p16(xs.tail))
+	}
+
+
+
+
+
+
+
+
+
+
+List.cons!(a, [g, s, t, x]) = [a, g, s, t , x]
+
+List.cons!(b, List.cons!(a, [g, s, t, x,])) = [b, a, g, s, t, x]
+
+
+
+[1, 2, 3] = List.Cons(1, List.Cons(2, List.Cons(3, List.Nil))))
+
+
+
+[3, 5, 7, 8] = [3, 5, 7, 8, List.nil]
+
+
+[7, 3, 2, 1, List.nil]
+
+[1, []]
+
+
+
+
+List.cons(xs.head, xs.tail)

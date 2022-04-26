@@ -7,44 +7,81 @@ type Object {
 
 // Converts a text to an Object. If not possible, returns rock
 Object.read(code: String): Object
-  ?a
+  switch String.eql(code)
+  {
+    "paper":    Object.paper
+    "scissors": Object.scissors
+  }  default    Object.rock
+  
 
-// Converts a number to an Object. If not possible, returns rock
+// // Converts a number to an Object. If not possible, returns rock
 Object.from_nat(n: Nat): Object
-  ?b
+  switch Nat.eql(n)
+    {
+      0:      Object.paper
+      1:      Object.scissors
+      2:      Object.rock
+    } default Object.rock
 
-// Checks if Object a beats Object b
-// Draw = false
-Object.wins(a: Object, b: Object): Bool
-  ?c
+// // Checks if Object a beats Object b
+Object.wins(a: Object, b: Object): Maybe<Bool>
+  let lose  = Maybe.some<Bool>(Bool.false)
+  let win   = Maybe.some<Bool>(Bool.true)
+  let draw  = Maybe.none<Bool>
+  case a b 
+  {
+    rock     scissors:  win
+    paper    rock:      win
+    scissors paper:     win
+    rock rock:          draw
+    paper paper:        draw
+    scissors scissors:  draw
+  }default lose
 
-// If wins return "You won", else "You lost"
-Object.match_result(win: Bool): String
-  ?d
+// // If wins, return "Você ganhou" else "Você perdeu"
+Object.match_result(win: Maybe<Bool>): String
+  switch Maybe.eql<Bool>(Bool.eql, win)
+  {
+    Maybe.none<Bool>:           "Empatastes?!?"
+    Maybe.some<Bool>(true):     "É o jogas?"
+    Maybe.some<Bool>(false):    "Pq choras?"
+  } default "fodase"
 
-Test: IO(Unit)
+
+  Object.show(a: Object): String
+  case a
+  {
+    rock:       "PREDA"
+    paper:      "PAPER"
+    scissors:   "SCISSORS"
+  }
+
+game_01_rps: IO(Unit)
   IO {
     IO.print("Pick one: rock, paper or scissors")
     // Asks for user input and saves it in variable line
     get user_input = IO.get_line
 
     // Converts the user_input (String) to the Object type
-    let user_object = ?e
+    let user_object = Object.read(user_input)
 
-    // Returns a random number below 3
-    // 0, 1 or 2
+    // Number = Random -> 0, 1, 2
     get random_num = IO.random(3)
 
     // Converts random_num (Nat) to the Object type
-    let cpu_object = ?f
+    let cpu_object = Object.from_nat(random_num)
 
     // Compares user_object and cpu_object and returns true if user wins
-    let user_won = ?g
+    let user_won = Object.wins(user_object, cpu_object)
 
     // Final message to be said: "You won" or "You lost"
-    let final_message = ?h
+    let final_message = Object.match_result(user_won)
 
+    let cpu_show = Object.show(cpu_object)
+
+    IO.print(cpu_show)
     IO.print(final_message)
-
-    Test
+    
+    
+    game_01_rps
   }
