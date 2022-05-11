@@ -8,59 +8,96 @@ type Bool {
 // Is true
 // Returns true if input is true
 is_true(a: Bool): Bool
-
-  ?i2
+  a
 
 // Is false
 // Returns true if input is false
 is_false(a: Bool): Bool
-
-  ?i
+  case a {
+    true: Bool.false
+    false: Bool.true
+  }
 
 // Negation
 // Returns the opposite of a Bool
-neg(b: Bool): Bool 
-
-  ?n
+neg(b: Bool): Bool
+  case b {
+    true: Bool.false
+    false: Bool.true
+  }
 
 // And
 // Returns true if both inputs are true
 and(a: Bool, b: Bool): Bool
-
-  ?a
+  case a {
+    true: b
+    false: Bool.false
+  }
 
 // Or
-// Returs true if any input is true
+// Returns true if any input is true
 or(a: Bool, b: Bool): Bool
-
-  ?o
+  case a {
+    true: Bool.true
+    false: b
+  }
 
 // Equal
-// Returs true if both inputs are identical
+// Returns true if both inputs are identical
 eql(a: Bool, b: Bool): Bool
-
-  ?e
+  case a {
+    true: b
+    false: neg(b)
+  }
 
 // Xor
 // Returns true if both inputs are different
 xor(a: Bool, b: Bool): Bool
-
-  ?x
+  case a {
+    true: neg(b)
+    false: b
+  }
 
 // Nor
 // Returns true if both inputs are false
 nor(a: Bool, b: Bool): Bool
-
-  ?n2
+  case a {
+    true: Bool.false
+    false: neg(b)
+  }
 
 // Nand
 // Returns false only if both inputs are true
 nand(a: Bool, b: Bool): Bool
-
-  ?n3
+  case a {
+    true: neg(b)
+    false: Bool.true
+  }
 
 // Xnor
 // Returns true if both inputs are identical
 xnor(a: Bool, b: Bool): Bool
+  case a {
+    true: b
+    false: neg(b)
+  }
 
-  ?x2
+ex_00:_
+  let a = is_true(true) // true
+  let b = is_false(false) // true
+  let c1 = neg(false) // true
+  let c2 = neg(true) // false
+  let d = and(true, true) // true
+  let e1 = or(true, false) //true
+  let e2 = or(true, true) // true
+  let e3 = or(false, true) // true
+  let f1 = eql(true, true) // true
+  let f2 = eql(false, false) // true
+  let g1 = xor(true, false) // true
+  let g2 = xor(false, true) // true
+  let h = nor(false, false) // true
+  let i = nand(true, true) // false
+  let j1 = xnor(true, true) // true
+  let j2 = xnor(false, false) // true
+
+  List.show!(Bool.show [a, b, c1, c2, d, e1, e2, e3, f1, f2, g1, g2, h, i, j1, j2])
