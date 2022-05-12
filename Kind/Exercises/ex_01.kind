@@ -1,23 +1,35 @@
-// Basic Exercises involving Nats
+// type MaybeBool
+// It maybe holds a Boolean inside it
+type MaybeBool { 
+  none 
+  some(value: Bool)
+ }
 
-type Nat {
-  zero
-  succ(pred: Nat)
-}
+// Returns true if Maybe is none
+is_none(a: MaybeBool): Bool
+  ?a
+    
+// Returns true if Maybe is some
+is_some(a: MaybeBool): Bool
+  ?b
 
-// Increment
-// 2 + 1 = 3
-// 0 + 1 = 1
-inc(a: Nat): Nat  
+// Returns true if both inputs are identical
+// eql(MaybeBool.none,             MaybeBool.none            ) -> true
+// eql(MaybeBool.some(Bool.false), MaybeBool.some(Bool.false)) -> true
+eql(a: MaybeBool, b: MaybeBool): Bool
+  ?c
 
-  ?i
-
-// Decrement
-// 2 - 1 = 1
-// 0 - 1 = 0
-dec(a: Nat): Nat
-
+// Returns the value inside the MaybeBool.
+// If there is no value contained, returns v instead
+default(a: MaybeBool, v: Bool): Bool
   ?d
 
-is_zero(a: Nat): Bool
-  ?a
+// Create a MaybeBool from a Boolean
+// create(Bool.false) -> MaybeBool(Bool.false)
+create(a:Bool): MaybeBool
+  ?e
+
+// Returns the first input that is a MaybeBool.some
+// Returns MaybeBool.none if both are MaybeBool.none
+or(a: MaybeBool, b: MaybeBool) : MaybeBool 
+  ?f

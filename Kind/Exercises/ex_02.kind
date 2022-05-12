@@ -1,64 +1,43 @@
-// Advanced exercises involving recursion
-
-type Nat {
-  zero
-  succ(pred: Nat)
+// type PairBool
+// Contains 2 Booleans inside it
+type PairBool { 
+  new(fst: Bool, snd: Bool)
 }
 
-// Doubles a number
-dbl(a: Nat): Nat // double
-
-  ?b
-
-// Addition
-add(a: Nat, b: Nat): Nat
-
+// Returns the first element of a pair
+fst(pair: PairBool): Bool
   ?a
 
-// Multiplication
-mul(a: Nat, b: Nat): Nat
+// Returns the second element of a pair
+snd(pair: PairBool): Bool
+  ?b
+
+// Returns true if both elements of a PairBool are identical
+eql_elements(a: PairBool): Bool 
+  ?c
   
-  ?m
-
-// Subtraction
-// 4 - 5 = 0
-// 5 - 4 = 1
-sub(a: Nat, b: Nat): Nat
-
-  ?s
-
-// Factorial
-// 4! = 24
-fac(a: Nat): Nat 
-  
+// Returns true if both Pairs are equal 
+// eql(PairBool.new(false, false), PairBool.new(true, true)) -> false 
+// eql(PairBool.new(true, false), PairBool.new(true, false)) -> true
+eql(a: PairBool, b: PairBool): Bool
   ?f
 
-// Division
-// 1 / 2 = 0
-// x / 0 = 0
-// 5 / 2 = 2
-div(a: Nat, b: Nat): Nat // division
+// Returns true if both Pairs are different
+// eql(PairBool.new(false, false), PairBool.new(true, true)) -> true 
+// eql(PairBool.new(true, false), PairBool.new(true, false)) -> false
+xor(a: PairBool, b: PairBool): Bool
+  ?f
   
-  ?d
+// Creates a PairBool from 2 Booleans
+create(a: Bool, b: Bool): PairBool
+  ?h
 
-// Equal
-eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the same and false if they are different.
-  
-  ?e 
+// Inverts the values of a PairBool
+// neg(PairBool.new(false, false) -> PairBool.new(true, true)
+// neg(PairBool.new(false, true) -> PairBool.new(true, false)
+neg(pair: PairBool): PairBool
+  ?i
 
-// Do not use the "not" function to create the functions below
-
-// Greater than
-// 2 > 1 = True
-// 3 > 3 = False
-gtn(a: Nat, b: Nat): Bool // if A > B == True else false
-  
-  ?g
-
-// Lower than
-// 1 < 2 = True
-// 3 < 3 = False
-ltn(a: Nat, b: Nat): Bool // if A > B == False else true 
-  
-  ?l
-
+// Inverts the 2 elements of a PairBool
+swap(pair: PairBool): PairBool 
+  ?k

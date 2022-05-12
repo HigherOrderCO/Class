@@ -1,29 +1,64 @@
-// Basic exercises involving Lists
+// Advanced exercises involving recursion
 
-type List <A: Type> {
-  nil
-  cons(head: A, tail: List<A>)
+type Nat {
+  zero
+  succ(pred: Nat)
 }
 
-// Returns the list without the first element
-tail<A: Type>(xs: List<A>): List<A>
+// Doubles a number
+dbl(a: Nat): Nat // double
+
+  ?b
+
+// Addition
+add(a: Nat, b: Nat): Nat
+
   ?a
 
-// Returns the length of a list
-length<A: Type>(xs: List<A>): Nat
-  ?a
+// Multiplication
+mul(a: Nat, b: Nat): Nat
+  
+  ?m
 
-// Concatenates two lists
-concat<A: Type>(xs: List<A>, ys: List<A>): List<A>
-  ?a
+// Subtraction
+// 4 - 5 = 0
+// 5 - 4 = 1
+sub(a: Nat, b: Nat): Nat
 
-// Applies a function to all elements of a list
-map<A: Type, B: Type>(fn: A -> B, xs: List<A>): List<B>
-  ?a
+  ?s
 
-// Returns the same list, with the order reversed
-reverse<A: Type>(xs: List<A>): List<A>
-  reverse.go<A>(List.nil<A>, xs)
+// Factorial
+// 4! = 24
+fac(a: Nat): Nat 
+  
+  ?f
 
-reverse.go<A: Type>(new_list: List<A>, old_list: List<A>): List<A>
-  ?r
+// Division
+// 1 / 2 = 0
+// x / 0 = 0
+// 5 / 2 = 2
+div(a: Nat, b: Nat): Nat // division
+  
+  ?d
+
+// Equal
+eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the same and false if they are different.
+  
+  ?e 
+
+// Do not use the "not" function to create the functions below
+
+// Greater than
+// 2 > 1 = True
+// 3 > 3 = False
+gtn(a: Nat, b: Nat): Bool // if A > B == True else false
+  
+  ?g
+
+// Lower than
+// 1 < 2 = True
+// 3 < 3 = False
+ltn(a: Nat, b: Nat): Bool // if A > B == False else true 
+  
+  ?l
+
