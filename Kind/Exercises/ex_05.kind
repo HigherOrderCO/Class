@@ -13,12 +13,37 @@ swap<A: Type, B: Type>(pair: Pair<A,B>): Pair<B,A>
 
 // Returns the first element of a pair
 first<A: Type, B: Type>(pair: Pair<A,B>): A
-  ?a
+  case pair {
+    new: pair.fst
+  }
 
 // Returns the second element of a pair
 second<A: Type, B: Type>(pair: Pair<A,B>): B
-  ?a
+  case pair {
+    new: pair.snd
+  }
 
 // Applies a function to both elements of a Pair
 map<A: Type, B: Type>(fn: A -> B, pair: Pair<A,A>): Pair<B,B>
-  ?a
+  case pair {
+    new: Pair.new<B,B>(fn(pair.fst), fn(pair.snd))
+  }
+
+// Basic function for map testing
+// neg(value: Bool): Bool
+//   case value {
+//     true: Bool.false
+//     false: Bool.true
+//   }
+
+ex_05: _
+//   let a = first<Bool, Bool>(Pair.new<Bool, Bool>(true, false)) // true
+//   let b = second<Bool, Bool>(Pair.new<Bool, Bool>(true, false)) // false
+  // let c = map<Bool, Bool>(neg, Pair.new<Bool, Bool>(true, false)) // Pair.new(false, true)
+  let bool_pair = Pair.new<Bool, Bool>(true, false)
+  let pair_pair = Pair.new<Pair<Bool,Bool>, Pair<Bool, Bool>>(bool_pair, bool_pair)
+  let d = map<Pair<Bool, Bool>, Bool>(second<Bool,Bool>, pair_pair) // Pair.new(false, false)
+  // a
+  // b
+  // c
+  d
