@@ -7,29 +7,79 @@ type MaybeBool {
 
 // Returns true if Maybe is none
 is_none(a: MaybeBool): Bool
-  ?a
+  case a {
+    none: Bool.true
+    some: Bool.false
+  }
     
 // Returns true if Maybe is some
 is_some(a: MaybeBool): Bool
-  ?b
+  case a {
+    none: Bool.false
+    some: Bool.true
+  }
 
 // Returns true if both inputs are identical
 // eql(MaybeBool.none,             MaybeBool.none            ) -> true
 // eql(MaybeBool.some(Bool.false), MaybeBool.some(Bool.false)) -> true
 eql(a: MaybeBool, b: MaybeBool): Bool
-  ?c
+  case a {
+    none: is_none(b)
+    some: case b {
+      none: Bool.false
+      some: case a.value {
+        true: b.value
+        false: case b.value {
+          true: Bool.false
+          false: Bool.true
+        }
+      }
+    }
+  }
 
 // Returns the value inside the MaybeBool.
 // If there is no value contained, returns v instead
-default(a: MaybeBool, v: Bool): Bool
-  ?d
+test_default(a: MaybeBool, v: Bool): Bool
+  case a {
+    none: v
+    some: a.value
+  }
 
 // Create a MaybeBool from a Boolean
 // create(Bool.false) -> MaybeBool(Bool.false)
 create(a:Bool): MaybeBool
-  ?e
+  MaybeBool.some(a)
 
 // Returns the first input that is a MaybeBool.some
 // Returns MaybeBool.none if both are MaybeBool.none
 or(a: MaybeBool, b: MaybeBool) : MaybeBool 
-  ?f
+  case a {
+    none: b
+    some: a
+  }
+
+ex_01: _
+  let a = is_none(MaybeBool.none) // true
+  let b1 = is_some(MaybeBool.some(Bool.true)) // true
+  let b2 = is_some(MaybeBool.some(Bool.false)) // true
+  let c1 = eql(MaybeBool.none, MaybeBool.none) // true
+  let c2 = eql(MaybeBool.some(Bool.true), MaybeBool.some(Bool.true)) // true
+  let c3 = eql(MaybeBool.some(Bool.false), MaybeBool.some(Bool.false)) // true
+  let d1 = test_default(MaybeBool.none, Bool.true) // true
+  let d2 = test_default(MaybeBool.none, Bool.false) // false
+  let d3 = test_default(MaybeBool.some(Bool.true), Bool.false) // true
+  let d4 = test_default(MaybeBool.some(Bool.false), Bool.true) // false
+  let e1 = create(Bool.true) // MaybeBool.some(Bool.true)
+  let e2 = create(Bool.false) // MaybeBool.some(Bool.false)
+  let f1 = or(MaybeBool.none, MaybeBool.none) // MaybeBool.none
+  let f2 = or(MaybeBool.some(Bool.true), MaybeBool.none) // MaybeBool.some(Bool.true)
+  let f3 = or(MaybeBool.none, MaybeBool.some(Bool.false)) // MaybeBool.some(Bool.false)
+  let f4 = or(MaybeBool.some(Bool.false), MaybeBool.some(Bool.true)) // MaybeBool.some(Bool.false)
+
+  // List.show!(Bool.show [a, b1, b2, c1, c2, c3, d1, d2, d3, d4])
+  // e1
+  // e2
+  // f1
+  // f2
+  // f3
+  // f4
