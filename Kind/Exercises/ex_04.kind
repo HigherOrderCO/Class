@@ -7,44 +7,79 @@ type Nat {
 
 // Doubles a number
 dbl(a: Nat): Nat // double
-
-  ?b
+  case a {
+    zero: Nat.zero
+    succ: Nat.succ(Nat.succ(dbl(a.pred)))
+  }
 
 // Addition
 add(a: Nat, b: Nat): Nat
-
-  ?a
+  case a {
+    zero: b
+    succ: case b {
+      zero: a
+      succ: Nat.succ(add(a.pred, b))
+    }
+  }
 
 // Multiplication
 mul(a: Nat, b: Nat): Nat
-  
-  ?m
+  case a {
+    zero: Nat.zero
+    succ: case b {
+      zero: Nat.zero
+      succ: add(b, mul(a.pred, b))
+    }
+  }
 
 // Subtraction
 // 4 - 5 = 0
 // 5 - 4 = 1
 sub(a: Nat, b: Nat): Nat
-
-  ?s
+  case a {
+    zero: Nat.zero
+    succ: case b {
+      zero: a
+      succ: sub(a.pred, b.pred)
+    }
+  }
 
 // Factorial
 // 4! = 24
 fac(a: Nat): Nat 
-  
-  ?f
+  case a {
+    zero: Nat.succ(a)
+    succ: mul(a, fac(a.pred))
+  }
 
 // Division
 // 1 / 2 = 0
 // x / 0 = 0
 // 5 / 2 = 2
-div(a: Nat, b: Nat): Nat // division
-  
-  ?d
+div(a: Nat, b: Nat): Nat // division <----------- error when equal numbers
+  case ltn(a, b) {
+    true: Nat.zero
+    false: case a {
+      zero: Nat.zero
+      succ: case b {
+        zero: Nat.zero
+        succ: Nat.succ(div(sub(a, b), b))
+      }
+    }
+  }
 
 // Equal
 eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the same and false if they are different.
-  
-  ?e 
+  case a {
+    zero: case b {
+      zero: Bool.true
+      succ: Bool.false
+    }
+    succ: case b {
+      zero: Bool.false
+      succ: eql(a.pred, b.pred)
+    }
+  }
 
 // Do not use the "not" function to create the functions below
 
@@ -52,13 +87,99 @@ eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the s
 // 2 > 1 = True
 // 3 > 3 = False
 gtn(a: Nat, b: Nat): Bool // if A > B == True else false
-  
-  ?g
+  case a {
+    zero: Bool.false
+    succ: case b {
+      zero: Bool.true
+      succ: gtn(a.pred, b.pred)
+    }
+  }
 
 // Lower than
 // 1 < 2 = True
 // 3 < 3 = False
 ltn(a: Nat, b: Nat): Bool // if A > B == False else true 
-  
-  ?l
+  case a {
+    zero: case b {
+      zero: Bool.false
+      succ: Bool.true
+    }
+    succ: case b {
+      zero: Bool.false
+      succ: ltn(a.pred, b.pred)
+    }
+  }
 
+ex_04: _
+
+// double
+  // let dbl1 = dbl(Nat.zero) // 0
+  // let dbl2 = dbl(Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 6
+  // let dbl3 = dbl(Nat.succ(Nat.succ(Nat.zero))) // 4
+
+  // List.show!(Nat.show [dbl1, dbl2, dbl3])
+
+// add
+  // let add1 = add(Nat.zero, Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 3
+  // let add2 = add(Nat.succ(Nat.succ(Nat.zero)), Nat.zero) // 2
+  // let add3 = add(Nat.succ(Nat.succ(Nat.zero)), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 5
+  // let add4 = add(Nat.succ(Nat.succ(Nat.succ(Nat.zero))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 6
+
+  // List.show!(Nat.show [add1, add2, add3, add4])
+
+// multiplication
+  // let mul1 = mul(Nat.succ(Nat.succ(Nat.succ(Nat.zero))), Nat.zero) // 0
+  // let mul2 = mul(Nat.succ(Nat.succ(Nat.zero)), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 6
+  // let mul3 = mul(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.zero)))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 12
+
+  // List.show!(Nat.show [mul1, mul2, mul3, mul4])
+
+// subtraction
+
+  // let sub1 = sub(Nat.zero, Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 0
+  // let sub2 = sub(Nat.succ(Nat.succ(Nat.zero)), Nat.zero) // 2
+  // let sub3 = sub(Nat.succ(Nat.succ(Nat.zero)), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 0
+  // let sub4 = sub(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.zero)))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 1
+  // let sub5 = sub(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.zero))))))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // 4
+
+  // List.show!(Nat.show [sub1, sub2, sub3, sub4, sub5])
+
+// factorial
+  // let fac1 = fac(Nat.zero) // 1
+  // let fac2 = fac(Nat.succ(Nat.zero)) // 1
+  // let fac3 = fac(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.zero)))))))) // 5040
+
+  // List.show!(Nat.show [fac1, fac2, fac3, fac4, fac5])
+
+// division
+  let six = Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.zero))))))
+  let div1 = div(six, six) // 1 <-
+  let div2 = div(Nat.succ(Nat.zero), six) // 0
+  let div3 = div(Nat.zero, six) // 0
+  let div4 = div(six, Nat.zero) // 0
+  let div5 = div(six, Nat.succ(Nat.zero)) // 6
+  let div6 = div(dbl(six), div(six, 2)) // 4
+  let div7 = div(add(dbl(six), six), sub(six, Nat.succ(Nat.zero))) // 3
+
+  List.show!(Nat.show [div1, div2, div3, div4, div5, div6, div7])
+
+// equal
+  // let eql1 = eql(Nat.zero, Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // false
+  // let eql2 = eql(Nat.succ(Nat.succ(Nat.succ(Nat.zero))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // true
+  // let eql3 = eql(Nat.succ(Nat.succ(Nat.zero)), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // false
+
+  // List.show!(Bool.show [eql1, eql2, eql3])
+
+// greater than
+  // let gtn1 = gtn(Nat.zero, Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // false
+  // let gtn2 = gtn(Nat.succ(Nat.succ(Nat.succ(Nat.zero))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // false
+  // let gtn3 = gtn(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.zero)))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // true
+
+  // List.show!(Bool.show [gtn1, gtn2, gtn3])
+
+// lower than
+  // let ltn1 = ltn(Nat.succ(Nat.zero), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // true
+  // let ltn2 = ltn(Nat.succ(Nat.succ(Nat.succ(Nat.zero))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // false
+  // let ltn3 = ltn(Nat.succ(Nat.succ(Nat.succ(Nat.succ(Nat.zero)))), Nat.succ(Nat.succ(Nat.succ(Nat.zero)))) // false
+
+  // List.show!(Bool.show [ltn1, ltn2, ltn3])
