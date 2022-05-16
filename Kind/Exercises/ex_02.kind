@@ -1,24 +1,121 @@
-// Basic Exercises involving Pairs
-
-type Pair <A: Type, B: Type> {
-  new(fst: A, snd: B)
+// type PairBool
+// Contains 2 Booleans inside it
+type PairBool { 
+  new(fst: Bool, snd: Bool)
 }
 
-// Example:
-// Swaps the elements of a pair
-swap<A: Type, B: Type>(pair: Pair<A,B>): Pair<B,A>
-  case pair {
-    new: Pair.new<B, A>(pair.snd, pair.fst)
+// Returns the first element of a pair
+fst(pair: PairBool): Bool
+  case pair
+  {
+    new: pair.fst
   }
 
-// Returns the first element of a pair
-first<A: Type, B: Type>(pair: Pair<A,B>): A
-  ?a
-
 // Returns the second element of a pair
-second<A: Type, B: Type>(pair: Pair<A,B>): B
-  ?a
+snd(pair: PairBool): Bool
+  case pair
+  {
+    new: pair.snd
+  }
 
-// Applies a function to both elements of a Pair
-map<A: Type, B: Type>(fn: A -> B, pair: Pair<A,A>): Pair<B,B>
-  ?a
+// Returns true if both elements of a PairBool are identical
+eql_elements(a: PairBool): Bool 
+  case a
+  {
+    new: Bool_eql(a.fst, a.snd)
+  }
+
+Bool_eql(a: Bool, b: Bool): Bool
+  case a
+  {
+    true: b
+    false:
+      case b
+      {
+        true: Bool.false
+        false: Bool.true
+      }
+  }
+
+// Returns true if both Pairs are equal 
+// eql(PairBool.new(false, false), PairBool.new(true, true)) -> false 
+// eql(PairBool.new(true, false), PairBool.new(true, false)) -> true
+eql(a: PairBool, b: PairBool): Bool
+  case a b
+  {
+    new new: Bool_and(Bool_eql(a.fst, b.fst), Bool_eql(a.snd, b.snd))
+  }
+
+
+Bool_and(a: Bool, b: Bool): Bool
+  case a b
+  {
+    true true: Bool.true
+  } default Bool.false
+
+// Returns true if both Pairs are different
+// eql(PairBool.new(false, false), PairBool.new(true, true)) -> true 
+// eql(PairBool.new(true, false), PairBool.new(true, false)) -> false
+xor(a: PairBool, b: PairBool): Bool
+  case a b
+  {
+    new new: Bool_nand(Bool.eql(a.fst, b.fst), Bool.eql(a.snd, b.snd))
+  }
+  
+
+Bool_nand(a: Bool, b: Bool): Bool
+  case a b
+  {
+    true true: Bool.false
+  } default Bool.true
+
+// Creates a PairBool from 2 Booleans
+create(a: Bool, b: Bool): PairBool
+  PairBool.new(a, b)
+
+// Inverts the values of a PairBool
+// neg(PairBool.new(false, false) -> PairBool.new(true, true)
+// neg(PairBool.new(false, true) -> PairBool.new(true, false)
+neg(pair: PairBool): PairBool
+  case pair
+  {
+    new: PairBool.new(Bool_neg(pair.fst), Bool_neg(pair.snd))
+  }
+
+neg2(pair: PairBool): PairBool
+  case pair
+  {
+    new: 
+      case pair.fst
+      {
+        true: 
+          case pair.snd
+          {
+            true: PairBool.new(Bool.false, Bool.false)
+            false: PairBool.new(Bool.false, Bool.true)
+          }
+        false:
+          case pair.snd
+          {
+            true: PairBool.new(Bool.true, Bool.false)
+            false: PairBool.new(Bool.true, Bool.true)
+          }
+      }
+  }
+
+Bool_neg(a: Bool): Bool
+  case a
+  {
+    true: Bool.false
+    false: Bool.true
+  }
+
+// Inverts the 2 elements of a PairBool
+swap(pair: PairBool): PairBool 
+  case pair
+  {
+    new: PairBool.new(pair.snd, pair.fst)
+  }
+
+ex_07:_
+  neg(PairBool.new(Bool.true, Bool.false))

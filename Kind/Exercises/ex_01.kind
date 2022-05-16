@@ -1,23 +1,97 @@
-// Basic Exercises involving Nats
+// type MaybeBool
+// It maybe holds a Boolean inside it
+type MaybeBool { 
+  none 
+  some(value: Bool)
+ }
 
-type Nat {
-  zero
-  succ(pred: Nat)
-}
+// Returns true if Maybe is none
+is_none(a: MaybeBool): Bool
+  case a
+  {
+    none: Bool.true
+    some: Bool.false
+  }
+    
+// Returns true if Maybe is some
+is_some(a: MaybeBool): Bool
+  case a
+  {
+    none: Bool.false
+    some: Bool.true
+  }
 
-// Increment
-// 2 + 1 = 3
-// 0 + 1 = 1
-inc(a: Nat): Nat  
+// Returns true if both inputs are identical
+// eql(MaybeBool.none,             MaybeBool.none            ) -> true
+// eql(MaybeBool.some(Bool.false), MaybeBool.some(Bool.false)) -> true
+eql(a: MaybeBool, b: MaybeBool): Bool
+  case a
+  {
+    none:
+      case b
+      {
+        none: Bool.true
+        some: Bool.false
+      }
+    some:
+      case b
+      {
+        none: Bool.false
+        some: 
+          case a.value b.value
+          {
+            false false: Bool.true
+            true true: Bool.true
+          } default Bool.false
+      }
+  }
 
-  ?i
+// Returns the value inside the MaybeBool.
+// If there is no value contained, returns v instead
+default(a: MaybeBool, v: Bool): Bool
+  case a
+  {
+    none: v
+    some: a.value
+  }
 
-// Decrement
-// 2 - 1 = 1
-// 0 - 1 = 0
-dec(a: Nat): Nat
+// Create a MaybeBool from a Boolean
+// create(Bool.false) -> MaybeBool(Bool.false)
+create(a:Bool): MaybeBool
+  MaybeBool.some(a)
 
-  ?d
+// Returns the first input that is a MaybeBool.some
+// Returns MaybeBool.none if both are MaybeBool.none
+or(a: MaybeBool, b: MaybeBool): MaybeBool 
+  case a
+  {
+    none:
+      case b
+      {
+        none: MaybeBool.none
+        some: MaybeBool.some(b.value)
+      }
+    some: MaybeBool.some(a.value)
+  }
 
-is_zero(a: Nat): Bool
-  ?a
+or2(a: MaybeBool, b: MaybeBool) : MaybeBool 
+    case a b
+    {
+      none none: MaybeBool.none
+      none some: b
+    } default a
+
+
+or3(a: MaybeBool, b: MaybeBool) : MaybeBool  
+  case a
+  {
+    none: b
+    some: a
+  }
+
+or4(a: MaybeBool, b: MaybeBool): MaybeBool 
+  case a
+  {
+    none: b
+    some: MaybeBool.some(a.value)
+  }

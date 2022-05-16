@@ -1,29 +1,119 @@
-// Basic exercises involving Lists
+// Advanced exercises involving recursion
 
-type List <A: Type> {
-  nil
-  cons(head: A, tail: List<A>)
+type Nat {
+  zero
+  succ(pred: Nat)
 }
 
-// Returns the list without the first element
-tail<A: Type>(xs: List<A>): List<A>
-  ?a
+// Doubles a number
+dbl(a: Nat): Nat // double
+  case a
+  {
+    zero: Nat.zero
+    succ: Nat.succ(Nat.succ(dbl(a.pred)))
+  }
+  
 
-// Returns the length of a list
-length<A: Type>(xs: List<A>): Nat
-  ?a
 
-// Concatenates two lists
-concat<A: Type>(xs: List<A>, ys: List<A>): List<A>
-  ?a
+// Addition
+add(a: Nat, b: Nat): Nat
+  case b
+  {
+    zero: a
+    succ: add(Nat.succ(a), b.pred)
+  }
 
-// Applies a function to all elements of a list
-map<A: Type, B: Type>(fn: A -> B, xs: List<A>): List<B>
-  ?a
 
-// Returns the same list, with the order reversed
-reverse<A: Type>(xs: List<A>): List<A>
-  reverse.go<A>(List.nil<A>, xs)
+// Multiplication
+mul(a: Nat, b: Nat): Nat
+  case a
+  {
+    zero: Nat.zero
+    succ: 
+      case b
+      {
+        zero: Nat.zero
+        succ: add(a, mul(a, b.pred))
+      }
+  }
 
-reverse.go<A: Type>(new_list: List<A>, old_list: List<A>): List<A>
-  ?r
+
+// Subtraction
+// 4 - 5 = 0
+// 5 - 4 = 1
+sub(a: Nat, b: Nat): Nat
+  case b
+  {
+    zero: a
+    succ: 
+      case a
+      {
+        zero: Nat.zero
+        succ: sub(a.pred, b.pred)
+      }
+  }
+
+
+
+// Factorial
+// 4! = 24
+fac(a: Nat): Nat 
+  case a
+  {
+    zero: Nat.succ(Nat.zero)
+    succ: mul(a, fac(a.pred))
+  }
+
+// Division
+// 1 / 2 = 0
+// x / 0 = 0
+// 5 / 2 = 2
+div(a: Nat, b: Nat): Nat // division
+  case a
+  {
+    zero: 0
+    succ: 
+      case b
+      {
+        zero: 0
+        succ: 
+          if a >=? b then 
+            Nat.succ(div(sub(a, b), b))
+          else
+            div(sub(a, b), b)
+      }
+  }
+
+
+
+// Equal
+eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the same and false if they are different.
+  case a b
+  {
+    zero zero: Bool.true
+    succ succ: eql(a.pred, b.pred)
+  } default Bool.false
+
+
+// Do not use the "not" function to create the functions below
+
+// Greater than
+// 2 > 1 = True
+// 3 > 3 = False
+gtn(a: Nat, b: Nat): Bool // if A > B == True else false
+  case a b
+  {
+    succ zero: Bool.true
+    succ succ: gtn(a.pred, b.pred)
+  } default Bool.false
+
+// Lower than
+// 1 < 2 = True
+// 3 < 3 = False
+ltn(a: Nat, b: Nat): Bool // if A > B == False else true 
+  case a b
+  {
+    succ zero: Bool.false
+    succ succ: ltn(a.pred, b.pred)
+  } default Bool.true
+

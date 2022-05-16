@@ -1,64 +1,29 @@
-// Advanced exercises involving recursion
+// Basic Exercises involving Nats
 
 type Nat {
   zero
   succ(pred: Nat)
 }
 
-// Doubles a number
-dbl(a: Nat): Nat // double
+// Increment
+// 2 + 1 = 3
+// 0 + 1 = 1
+inc(a: Nat): Nat  
+  Nat.succ(a)
 
-  ?b
+// Decrement
+// 2 - 1 = 1
+// 0 - 1 = 0
+dec(a: Nat): Nat
+  case a
+  {
+    zero: Nat.zero
+    succ: a.pred
+  }
 
-// Addition
-add(a: Nat, b: Nat): Nat
-
-  ?a
-
-// Multiplication
-mul(a: Nat, b: Nat): Nat
-  
-  ?m
-
-// Subtraction
-// 4 - 5 = 0
-// 5 - 4 = 1
-sub(a: Nat, b: Nat): Nat
-
-  ?s
-
-// Factorial
-// 4! = 24
-fac(a: Nat): Nat 
-  
-  ?f
-
-// Division
-// 1 / 2 = 0
-// x / 0 = 0
-// 5 / 2 = 2
-div(a: Nat, b: Nat): Nat // division
-  
-  ?d
-
-// Equal
-eql(a: Nat, b: Nat): Bool // Given 2 numbers, it returns true if the 2 are the same and false if they are different.
-  
-  ?e 
-
-// Do not use the "not" function to create the functions below
-
-// Greater than
-// 2 > 1 = True
-// 3 > 3 = False
-gtn(a: Nat, b: Nat): Bool // if A > B == True else false
-  
-  ?g
-
-// Lower than
-// 1 < 2 = True
-// 3 < 3 = False
-ltn(a: Nat, b: Nat): Bool // if A > B == False else true 
-  
-  ?l
-
+is_zero(a: Nat): Bool
+  case a
+  {
+    zero: Bool.true
+    succ: Bool.false
+  }

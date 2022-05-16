@@ -8,22 +8,119 @@ type Bool {
 // Negation
 // Returns the opposite of a Bool
 neg(b: Bool): Bool 
-
-  ?n
+  case b
+  {
+    true: Bool.false
+    false: Bool.true
+  }
 
 // And
 // Returns true if both inputs are true
 and(a: Bool, b: Bool): Bool
-
-  ?a
+  case a b
+  {
+    true true: Bool.true
+  }default Bool.false
 
 // Or
 // Returs true if any input is true
 or(a: Bool, b: Bool): Bool
-
-  ?o
+  case a
+  {
+    true: a
+    false: b
+  }
 
 // Equal
 // Returs true if both inputs are identical
 eql(a: Bool, b: Bool): Bool
-  ?e
+  case b
+  {
+    true: a
+    false: neg(a)
+  }
+
+// Xor
+// Returns true if both inputs are different
+xor(a: Bool, b: Bool): Bool
+  case a
+  {
+    true: 
+      case b
+      {
+        true: Bool.false
+        false: a
+      }
+    false: b
+  }
+
+// Nor
+// Returns true if both inputs are false
+nor(a: Bool, b: Bool): Bool
+  case a
+  {
+    true: Bool.false
+    false:
+      case b
+      {
+        true: Bool.false
+        false: Bool.true
+      }
+  }
+
+
+nor2(a: Bool, b: Bool): Bool
+  case a b
+  {
+    false false: Bool.true
+  } default Bool.false
+
+nor3(a: Bool, b: Bool): Bool
+  neg(or(a, b))
+// Nand
+// Returns false only if both inputs are true
+nand(a: Bool, b: Bool): Bool
+  case a
+  {
+    true: 
+      case b
+      {
+        true: Bool.false
+        false: a
+      }
+    false: Bool.true
+  }
+
+nand2(a: Bool, b: Bool): Bool
+  case a b
+  {
+    true true: Bool.false
+  } default Bool.true
+
+nand3(a: Bool, b: Bool): Bool
+  neg(and(a, b))
+
+// Xnor
+// Returns true if both inputs are identical
+xnor(a: Bool, b: Bool): Bool
+  case a
+  {
+    true: b
+    false: 
+      case b
+      {
+        true: Bool.false
+        false: Bool.true
+      }
+  }
+
+xnor2(a: Bool, b: Bool): Bool
+  case a b
+  {
+    true true: Bool.true
+    false false: Bool.true
+  } default Bool.false
+
+xnor3(a: Bool, b: Bool): Bool
+  eql(a, b) //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+    
