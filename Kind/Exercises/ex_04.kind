@@ -68,21 +68,21 @@ fac(a: Nat): Nat
 // 1 / 2 = 0
 // x / 0 = 0
 // 5 / 2 = 2
-div(a: Nat, b: Nat): Nat // division
-  case a
-  {
-    zero: 0
-    succ: 
-      case b
-      {
-        zero: 0
-        succ: 
-          if a >=? b then 
-            Nat.succ(div(sub(a, b), b))
-          else
-            div(sub(a, b), b)
-      }
-  }
+// div(a: Nat, b: Nat): Nat // division
+//   case a
+//   {
+//     zero: 0
+//     succ: 
+//       case b
+//       {
+//         zero: 0
+//         succ: 
+//           if a >=? b then 
+//             Nat.succ(div(sub(a, b), b))
+//           else
+//             div(sub(a, b), b)
+//       }
+//   }
 
 
 
@@ -117,3 +117,98 @@ ltn(a: Nat, b: Nat): Bool // if A > B == False else true
     succ succ: ltn(a.pred, b.pred)
   } default Bool.true
 
+
+// Minimum
+// min(2, 3) = 2
+// min(4, 1) = 1
+min(a: Nat, b: Nat): Nat // if A < B then A else B
+  case a b
+  {
+    zero succ: a
+    succ succ: Nat.succ(min(a.pred, b.pred))
+  } default b
+
+
+// Maximum
+// max(2, 3) = 3
+// max(4, 1) = 4
+max(a: Nat, b: Nat): Nat // if A > B then A else B
+ case a b
+ {
+   zero succ: b
+   succ succ: Nat.succ(max(a.pred, b.pred))
+ } default a
+
+// Divides a number by two
+// 2 / 2 = 1
+// 5 / 2 = 2
+// 1 / 2 = 0
+hlf(a: Nat): Nat
+ to_nat(Bits.drop(1, to_bits(a)))
+
+
+type Bits
+{
+  e
+  o(pred: Bits)
+  i(pred: Bits)
+}
+
+to_nat(b: Bits): Nat
+  case b
+  {
+    e: Nat.zero
+    o: dbl(to_nat(b.pred))
+    i: Nat.succ(dbl(to_nat(b.pred)))
+  }
+
+
+
+incb(b: Bits): Bits
+  case b
+  {
+    e: Bits.i(Bits.e)
+    o: Bits.i(b.pred)
+    i: Bits.o(incb(b.pred))
+  }
+
+
+to_bits(n: Nat): Bits
+  case n
+  {
+    zero: Bits.o(Bits.e)
+    succ: incb(to_bits(n.pred))
+  }
+
+Bits.drop(n: Nat, b: Bits): Bits
+  case n
+  {
+    zero: b
+    succ: 
+      case b
+      {
+        e: Bits.e
+        o: Bits.drop(n.pred, b.pred)
+        i: Bits.drop(n.pred, b.pred)
+      }
+  }
+
+// Division
+// 1 / 2 = 0
+// x / 0 = 0
+// 5 / 2 = 2
+// div(a: Nat, b: Nat): Nat // division
+//   case a
+//   {
+//     zero: 0
+//     succ: 
+//       case b
+//       {
+//         zero: 0
+//         succ: 
+//           if a >=? b then 
+//             Nat.succ(div(sub(a, b), b))
+//           else
+//             div(sub(a, b), b)
+//       }
+//   }

@@ -48,7 +48,7 @@ eql(a: MaybeBool, b: MaybeBool): Bool
 
 // Returns the value inside the MaybeBool.
 // If there is no value contained, returns v instead
-default(a: MaybeBool, v: Bool): Bool
+extract(a: MaybeBool, v: Bool): Bool
   case a
   {
     none: v

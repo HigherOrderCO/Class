@@ -117,5 +117,5 @@ swap(pair: PairBool): PairBool
     new: PairBool.new(pair.snd, pair.fst)
   }
 
-ex_07:_
+ex_02:_
   neg(PairBool.new(Bool.true, Bool.false))

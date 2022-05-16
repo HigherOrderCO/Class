@@ -5,6 +5,20 @@ type Bool {
   false
 }
 
+// Is true
+// Returns true if input is true
+is_true(a: Bool): Bool
+  a
+
+// Is false
+// Returns true if input is false
+is_false(a: Bool): Bool
+  case a
+  {
+    true: Bool.false
+    false: Bool.true
+  }
+
 // Negation
 // Returns the opposite of a Bool
 neg(b: Bool): Bool 
