@@ -1,30 +1,32 @@
-// Considere a seguinte definição para booleanos:
+// Consider the following definition for booleans:
 //
-// True:  verdadeiro
-// False: falso
+// True:  true
+// False: false
 //
-// Com essa definição em mente, faça os seguintes exercícios:
+// With that definition in mind, do the following exercises:
 
-// PS.: Lembre-se que para tratar casos específicos,
-// você precisa escrever uma versão da função para cada caso,
-// e o HVM irá sempre tentará rodar as funções mais acima primeiro
+// PS.: Remember that to treat specific cases,
+// you need write a version of the function for each case,
+// then HVM will try to run the topmost function first.
 //
 // Exemplos:
-// (Func True x)  -> Irá rodar se o primeiro argumento for True
-// (Func x False) -> Irá rodar se o segundo argumento for False
-// (Func x y)     -> Irá rodar para qualquer valor
+// (Func True x)  -> Will run if first argument is True.
+// (Func x False) -> Will run if second argument is False.
+// (Func x y)     -> Will run for any value.
 
-// Operação lógica de negação
+// Logical gates:
+
+// Negation 
 // (Not x)
 
-// Operação lógica de igualdade
+// Equal
 // (Equal x y)
 
-// Operação lógica E
+// And
 // (And x y)
 
-// Operação lógica OU
+// Or
 // (Or x y)
 
-// Operação lógica OU Exclusivo
+// Xor
 // (Xor x y)

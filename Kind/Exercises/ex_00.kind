@@ -5,6 +5,18 @@ type Bool {
   false
 }
 
+// Is true
+// Returns true if input is true
+is_true(a: Bool): Bool
+
+  ?i2
+
+// Is false
+// Returns true if input is false
+is_false(a: Bool): Bool
+
+  ?i
+
 // Negation
 // Returns the opposite of a Bool
 neg(b: Bool): Bool 
@@ -26,4 +38,29 @@ or(a: Bool, b: Bool): Bool
 // Equal
 // Returs true if both inputs are identical
 eql(a: Bool, b: Bool): Bool
+
   ?e
+
+// Xor
+// Returns true if both inputs are different
+xor(a: Bool, b: Bool): Bool
+
+  ?x
+
+// Nor
+// Returns true if both inputs are false
+nor(a: Bool, b: Bool): Bool
+
+  ?n2
+
+// Nand
+// Returns false only if both inputs are true
+nand(a: Bool, b: Bool): Bool
+
+  ?n3
+
+// Xnor
+// Returns true if both inputs are identical
+xnor(a: Bool, b: Bool): Bool
+
+  ?x2

@@ -1,52 +1,52 @@
-// Considere a seguinte definição para números naturais:
+// Consider the following definition for natural numbers:
 //
-// Z:     O número zero
-// (S x): O sucessor de um número x
+// Z:     The number zero
+// (S x): The successor of a number x
 //
-// Ex.: O número 3 seria (S (S (S Z)))
+// Ex.: The number 3 would be (S (S (S Z)))
 //
-// Com essa definição em mente, faça os seguintes exercícios:
+// With that definition in mind, do the following exercises:
 
-// PS.: Lembre-se de novo que, se sua função tiver casos específicos,
-// você precisa escrever uma versão da função para cada um dos casos:
+// PS.: Remember again that, if your function has specific cases,
+// you need to write a version of the function for each case:
 //
-// (Func Z)     -> Irá rodar apenas para Zero
-// (Func (S n)) -> Irá rodar para qualquer número que não seja Zero
-//              -> Chamando a função desse jeito, você pode usar 'n' como variável
-// (Func x)     -> Irá rodar para qualquer número
+// (Func Z)     -> Will run only for Zero.
+// (Func (S n)) -> Will run for every number that is not Zero.
+//                 By calling the function in that way, you can use 'n' as variable.
+// (Func x)     -> Will run for any number.
 
-// Retorna o antecessor do número
+// Returns the predecessor of the number
 // (Pred x)
 
-// Retorna o dobro do número
+// Returns the Double of the number
 // (Dobro x)
 
-// Retorna metade (arredondado pra baixo) do número
+// Returns the Half of the number and round it down (e.g.:"5/2 = 2") 
 // (Metade x)
 
-// Retorna a adição de dois números
+// Returns the Sum of two numbers
 // (Add x y)
 
-// Retorna a subtração de dois números (0 se seria negativo)
+// Returns the Subtraction of two numbers (0 if it would be negative)
 // (Sub x y)
 
-// Retorna a multiplicação de dois números
+// Returns the Multiplication two numbers
 // (Mul x y)
 
-// Retorna o fatorial de um número
+// Returns the Factorial of the number
 // (Fat x)
 
-// Para os 3 exercícios a seguir, considere também a definição de Booleanos do arquivo anterior
+// For the following 3 exercises, consider the definition of Booleans from the previous file
 
-// Retorna se dois números são iguais
+// Returns if two numbers are equal
 // (Equal x y)
 
-// Retorna se o primeiro arg é maior que o segundo
-// (Maior x y)
+// Returns if the first arg is greater than the second
+// (Gtn x y)
 
-// Retorna se o primeiro arg é menor que o segundo
-// (Menor x y)
+// Returns if the first arg is lesser than the second
+// (Ltn x y)
 
-// SPECIAL BOSS: Retorna a divisão entre dois números, arredondada pra baixo
-// PS.: Retorna 0 em caso de divisão por 0
+// SPECIAL BOSS: Returns the division between two numbers, rounded down
+// PS.: Returns 0 in case of division by 0
 // (Div x y)

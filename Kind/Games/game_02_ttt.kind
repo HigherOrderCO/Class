@@ -29,8 +29,8 @@ TicTacToe.init: TicTacToe
   ?a
 
 // Gets the state of a given position in the board
-// x = row
-// y = column
+// x = Position in the row
+// y = Position in the column
 TicTacToe.get(x: Nat, y: Nat, game: TicTacToe): Maybe<TicTacToe.Piece>
   ?b
 
