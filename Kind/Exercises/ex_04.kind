@@ -197,18 +197,18 @@ Bits.drop(n: Nat, b: Bits): Bits
 // 1 / 2 = 0
 // x / 0 = 0
 // 5 / 2 = 2
-// div(a: Nat, b: Nat): Nat // division
-//   case a
-//   {
-//     zero: 0
-//     succ: 
-//       case b
-//       {
-//         zero: 0
-//         succ: 
-//           if a >=? b then 
-//             Nat.succ(div(sub(a, b), b))
-//           else
-//             div(sub(a, b), b)
-//       }
-//   }
+div(a: Nat, b: Nat): Nat // division
+  case a
+  {
+    zero: 0
+    succ: 
+      case b
+      {
+        zero: 0
+        succ: 
+          if a >=? b then 
+            Nat.succ(div(sub(a, b), b))
+          else
+            div(sub(a, b), b)
+      }
+  }
