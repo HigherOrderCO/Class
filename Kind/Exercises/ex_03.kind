@@ -9,22 +9,22 @@ type Nat {
 // 2 + 1 = 3
 // 0 + 1 = 1
 inc(a: Nat): Nat  
-  Nat.succ(a)
+  ?i
 
 // Decrement
 // 2 - 1 = 1
 // 0 - 1 = 0
 dec(a: Nat): Nat
-  case a
-  {
-    zero: Nat.zero
-    succ: a.pred
-  }
+  ?d
 
 is_zero(a: Nat): Bool
-  case a
-  {
-    zero: Bool.true
-    succ: Bool.false
+  ?a
+
+
+ex_03: _
+  IO {
+    Tests._03.inc(inc)
+    Tests._03.dec(dec)
+    Tests._03.is_zero(is_zero)
   }
   
