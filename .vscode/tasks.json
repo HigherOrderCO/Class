@@ -6,12 +6,22 @@
         {
             "label": "kind-run",
             "type": "shell",
-            "command": "kind ${fileBasenameNoExtension} --run"
+            "command": "cd ${fileDirname} && kind ${fileBasenameNoExtension} --run",
+            "presentation": {
+              "showReuseMessage": false,
+              "clear": true,
+              "focus": true
+            }
         },
         {
             "label": "kind-check",
             "type": "shell",
-            "command": "kind  ${file}"
+            "command": "cd ${fileDirname} && kind ${file}",
+            "presentation": {
+              "showReuseMessage": false,
+              "clear": true,
+              "focus": true
+            }
         }
     ]
   }

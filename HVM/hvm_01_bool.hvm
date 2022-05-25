@@ -9,7 +9,7 @@
 // you need write a version of the function for each case,
 // then HVM will try to run the topmost function first.
 //
-// Exemplos:
+// Examples:
 // (Func True x)  -> Will run if first argument is True.
 // (Func x False) -> Will run if second argument is False.
 // (Func x y)     -> Will run for any value.

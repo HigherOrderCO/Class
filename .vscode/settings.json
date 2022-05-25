@@ -8,4 +8,5 @@
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
     "terminal.integrated.gpuAcceleration": "on",
     "workbench.colorTheme": "Dracula",
+    "kindLanguageServer.projectRootFolder": "Kind/Exercises"
 }
