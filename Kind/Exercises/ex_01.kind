@@ -1,35 +1,74 @@
 // type MaybeBool
 // It maybe holds a Boolean inside it
+
 type MaybeBool { 
   none 
   some(value: Bool)
  }
-
+ 
+MaybeBool.show(m : MaybeBool) : String
+  case m {
+      none : "none()"
+      some : "some" | "(" | Bool.show(m.value) | ")" 
+  } 
 // Returns true if Maybe is none
 is_none(a: MaybeBool): Bool
-  ?a
+  case a {
+    none: Bool.true
+    some: Bool.false
+  }
     
 // Returns true if Maybe is some
 is_some(a: MaybeBool): Bool
-  ?b
-
+  case a {
+    none: Bool.false
+    some: Bool.true
+  }
 // Returns true if both inputs are identical
 // eql(MaybeBool.none,             MaybeBool.none            ) -> true
 // eql(MaybeBool.some(Bool.false), MaybeBool.none            ) -> false
 // eql(MaybeBool.some(Bool.true),  MaybeBool.some(Bool.false)) -> false
 // eql(MaybeBool.some(Bool.false), MaybeBool.some(Bool.false)) -> true
+eqlB(a: Bool, b: Bool): Bool
+  case a {
+      true: b 
+      false: case b{
+        true: false
+        false: true
+      }
+    }
+
 eql(a: MaybeBool, b: MaybeBool): Bool
-  ?c
+  let c = b
+  case a {
+    none: case b{
+      none: Bool.true
+      some: Bool.false
+    }
+    some: case c{
+      none: Bool.false
+      some: case a.value {
+        true: c.value
+        false: case c.value{
+          true: Bool.false
+          false: Bool.true
+      }
+    }
+  }
+  }
 
 // Returns the value inside the MaybeBool.
 // If there is no value contained, returns v instead
 extract(a: MaybeBool, v: Bool): Bool
-  ?d
+  case a {
+    none: v
+    some: a.value
+  }
 
 // Create a MaybeBool from a Boolean
 // create(Bool.false) -> MaybeBool(Bool.false)
 create(a:Bool): MaybeBool
-  ?e
+  MaybeBool.some(a)
 
 // Returns the first input that is a MaybeBool.some
 // Returns MaybeBool.none if both are MaybeBool.none

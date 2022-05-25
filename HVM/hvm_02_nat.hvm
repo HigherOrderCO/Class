@@ -12,17 +12,17 @@
 //
 // (Func Z)     -> Will run only for Zero.
 // (Func (S n)) -> Will run for every number that is not Zero.
-//                 By calling the function in that way, you can use 'n' as variable.
+//                 By calling the function in that way, you can use 'n' as a variable.
 // (Func x)     -> Will run for any number.
 
 // Returns the predecessor of the number
 // (Pred x)
 
 // Returns the Double of the number
-// (Dobro x)
+// (Double x)
 
 // Returns the Half of the number and round it down (e.g.:"5/2 = 2") 
-// (Metade x)
+// (Half x)
 
 // Returns the Sum of two numbers
 // (Add x y)
@@ -34,7 +34,7 @@
 // (Mul x y)
 
 // Returns the Factorial of the number
-// (Fat x)
+// (Fact x)
 
 // For the following 3 exercises, consider the definition of Booleans from the previous file
 

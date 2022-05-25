@@ -1,0 +1,51 @@
+// Consider the following definition for lists:
+//
+// Nil:         A empty list
+// (Cons x xs): A list with 'x' as first element and 'xs' as a list of the following elements
+//
+// Ex.: the list [1,2,3] would be (Cons 1 (Cons 2 (Cons 3 Nil)))
+//
+// With that definition in mind, do the following exercises:
+
+// P.S.: I hope you didn't forget that you have to
+// write a version of your funtion for each specific case it has =.=
+//
+// (Func Nil)          -> Will run for the empty list
+// (Func (Cons x Nil)) -> Will run for a singleton list
+// (Func (Cons x xs))  -> Will run for any non-empty list
+// (Func x)            -> Will run for any list
+
+// For the following 4 functions, since they require the list to have at least one element,
+// you can have them return Error.EmptyList when the input is a empty list, like this:
+(Func Nil) = Error.EmptyList
+
+// Returns the first element of a list
+// (Head xs)
+
+// Returns the list without its first element
+// (Tail xs)
+
+// Returns the last element of a list
+// (Last xs)
+
+// Returns the list without its last element
+// (Init xs)
+
+// Returns the length of the list
+// (Len xs)
+
+// Returns the concatenation of two lists
+// (Concat xs ys)
+
+// Returns the reversion of a list
+// (Reverse xs)
+
+//* ADVANCED SECTION
+
+// Map a function to all elements of the list
+// Ex.: (Map Not [True, False, True]) -> [False, True, False]
+// (Map fn xs)
+
+// Returns the list only with the elements that satisfy a condition
+// Ex.: (Filter Not [True, False, True]) -> [False]
+// (Filter fn xs)

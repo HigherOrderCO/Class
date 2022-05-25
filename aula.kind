@@ -1,0 +1,88 @@
+type Neg { 
+  one
+  pred(succ: Neg)
+}
+
+type Pos { 
+  zero
+  succ(pred: Pos)
+}
+
+
+type Inte { 
+  neg(num: Neg)
+  pos(num: Pos)
+}
+
+inc(n: Inte): Inte
+  case n {
+    neg: case n.num{
+        one: Inte.pos(Pos.zero)
+        pred: Inte.neg(n.num.succ)
+    } 
+    pos: Inte.pos(Pos.succ(n.num))
+  }
+
+add(n: Inte, m: Inte): Inte
+    case n {
+        neg: case m{
+            neg: case n.num {
+              one: Inte.neg(Neg.pred(m.num))
+              pred: case m.num {
+                one: Inte.neg(Neg.pred(n.num)) 
+                pred:?a //Inte.neg(Neg.pred(Neg.pred((Inte.neg(n.num.succ)),(n.num.succ))))
+                  }
+              }
+            pos: ?n 
+          }
+        
+        pos: case m {
+            neg: ?a//case n.mum{
+            pos: n//n.num.pred , m.num.pred)))
+            } 
+        
+      
+    }
+    
+//e = empty
+//o = 0
+//i = 1
+type Bits { 
+  e
+  o(pred: Bits)
+  i(pred: Bits)
+}
+//a = Bits.i(Bits.i(Bits.e))
+//b = Bits.o(Bits.i(Bits.i(Bits.e)))
+//c = Bits.o(Bits.o(Bits.i(Bits.i(Bits.e))))
+//d = Bits.i(Bits.i(Bits.i(Bits.i(Bits.e))))
+
+
+//Verifies if it is an Empty Bit
+
+//is_empty(a)      -> Bool.false
+//is_empty(b)      -> Bool.false
+//is_empty(c)      -> Bool.false
+//is_empty(d)      -> Bool.false
+//is_empty(Bits.e) -> Bool.true
+is_empty(b: Bits): Bool
+  case b {
+    e: Bool.true
+    // o: Bool.false
+    // i: Bool.false
+  } default Bool.false
+dec(b: Bits): Bits
+  case b {
+    e: Bits.e
+    o: Bits.i(dec(b.pred))
+    i: Bits.o(b.pred)
+  }
+
+aula: _ 
+let a = Bits.i(Bits.i(Bits.e))
+let b = Bits.o(Bits.i(Bits.i(Bits.e)))
+let c = Bits.o(Bits.o(Bits.i(Bits.i(Bits.e))))
+let d = Bits.i(Bits.i(Bits.i(Bits.i(Bits.e))))
+let e = Bits.e
+
+is_empty(e)
