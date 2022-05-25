@@ -1,0 +1,83 @@
+Tests._00.is_true(is_true: Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("is_true true",  is_true( true),  true)
+    Assert.bool("is_true false", is_true(false), false)
+    IO.print("is_true: All terms tested")
+  }
+
+Tests._00.is_false(is_false: Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("is_false true",  is_false( true), false)
+    Assert.bool("is_false false", is_false(false),  true)
+    IO.print("is_false: All terms tested")
+  }
+
+Tests._00.neg(neg: Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("neg true",  neg( true), false)
+    Assert.bool("neg false", neg(false),  true)
+    IO.print("neg: All terms tested")
+  }
+
+Tests._00.and(and: Bool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("and true true",   and(true,   true),  true)
+    Assert.bool("and true false",  and(true,  false), false)
+    Assert.bool("and false true",  and(false,  true), false)
+    Assert.bool("and false false", and(false, false), false)
+    IO.print("and: All terms tested")
+  }
+
+Tests._00.or(or: Bool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("or true true",   or(true,   true),  true)
+    Assert.bool("or true false",  or(true,  false),  true)
+    Assert.bool("or false true",  or(false,  true),  true)
+    Assert.bool("or false false", or(false, false), false)
+    IO.print("or: All terms tested")
+  }
+
+Tests._00.eql(eql: Bool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("eql true true",   eql(true,   true),  true)
+    Assert.bool("eql true false",  eql(true,  false), false)
+    Assert.bool("eql false true",  eql(false,  true), false)
+    Assert.bool("eql false false", eql(false, false),  true)
+    IO.print("eql: All terms tested")
+  }
+
+Tests._00.xor(xor: Bool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("xor true true",   xor(true,   true), false)
+    Assert.bool("xor true false",  xor(true,  false),  true)
+    Assert.bool("xor false true",  xor(false,  true),  true)
+    Assert.bool("xor false false", xor(false, false), false)
+    IO.print("xor: All terms tested")
+  }
+
+Tests._00.nor(nor: Bool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("nor true true",   nor(true,   true), false)
+    Assert.bool("nor true false",  nor(true,  false), false)
+    Assert.bool("nor false true",  nor(false,  true), false)
+    Assert.bool("nor false false", nor(false, false),  true)
+    IO.print("nor: All terms tested")
+  }
+
+Tests._00.nand(nand: Bool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("nand true true",   nand(true,   true), false)
+    Assert.bool("nand true false",  nand(true,  false),  true)
+    Assert.bool("nand false true",  nand(false,  true),  true)
+    Assert.bool("nand false false", nand(false, false),  true)
+    IO.print("nand: All terms tested")
+  }
+
+Tests._00.xnor(xnor: Bool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("xnor true true",   xnor(true,   true),  true)
+    Assert.bool("xnor true false",  xnor(true,  false), false)
+    Assert.bool("xnor false true",  xnor(false,  true), false)
+    Assert.bool("xnor false false", xnor(false, false),  true)
+    IO.print("xnor: All terms tested")
+  }
