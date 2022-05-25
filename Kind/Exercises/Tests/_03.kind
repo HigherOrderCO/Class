@@ -1,0 +1,25 @@
+Tests._03.inc(inc: Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("inc 0", inc(0), 1)
+    Assert.nat("inc 1", inc(1), 2)
+    Assert.nat("inc 1", inc(8), 9)
+    IO.print("swap: All terms tested")
+  }
+
+
+Tests._03.dec(dec: Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("dec 0", dec(0), 0)
+    Assert.nat("dec 1", dec(1), 0)
+    Assert.nat("dec 1", dec(8), 7)
+    IO.print("dec: All terms tested")
+  }
+
+
+Tests._03.is_zero(is_zero: Nat -> Bool): IO<Unit>
+  IO {
+    Assert.bool("is_zero 0", is_zero(0),  true)
+    Assert.bool("is_zero 1", is_zero(1), false)
+    Assert.bool("is_zero 1", is_zero(8), false)
+    IO.print("is_zero: All terms tested")
+  }
