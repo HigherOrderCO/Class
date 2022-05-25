@@ -1,0 +1,51 @@
+// Basic exercises involving Lists
+
+type List <A: Type> {
+  nil
+  cons(head: A, tail: List<A>)
+}
+
+// Returns the head of the List
+head<A: Type>(xs: List<A>): Maybe<A>
+  ?head
+
+// Returns the list without the first element
+tail<A: Type>(xs: List<A>): List<A>
+  ?a
+
+// Returns the length of a list
+length<A: Type>(xs: List<A>): Nat
+  ?a
+
+// Returns the last element of a list
+last<A: Type>(xs: List<A>): Maybe<A>
+  ?last
+
+// Returns the list without the last element
+init<A: Type>(xs: List<A>): List<A>
+  ?init
+
+// Concatenates two lists
+concat<A: Type>(xs: List<A>, ys: List<A>): List<A>
+  ?a
+
+// Removes n elements from the start of the list
+// List.drop<Nat>(3, [1,2,3,4,5]) -> [4, 5]
+drop<A: Type>(n: Nat, xs: List<A>): List<A>
+  ?drop
+
+// Creates a new list with the N first elements of the previous list
+// List.take<Nat>(3, [1,2,3,4,5]) -> [1,2,3]
+take<A: Type>(n: Nat, xs: List<A>): List<A>
+  ?take
+
+// Applies a function to all elements of a list
+map<A: Type, B: Type>(fn: A -> B, xs: List<A>): List<B>
+  ?a
+
+// Returns the same list, with the order reversed
+reverse<A: Type>(xs: List<A>): List<A>
+  reverse.go<A>(List.nil<A>, xs)
+
+reverse.go<A: Type>(new_list: List<A>, old_list: List<A>): List<A>
+  ?r
