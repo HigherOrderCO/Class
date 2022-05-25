@@ -7,91 +7,42 @@ type MaybeBool {
 
 // Returns true if Maybe is none
 is_none(a: MaybeBool): Bool
-  case a
-  {
-    none: Bool.true
-    some: Bool.false
-  }
+  ?a
     
 // Returns true if Maybe is some
 is_some(a: MaybeBool): Bool
-  case a
-  {
-    none: Bool.false
-    some: Bool.true
-  }
+  ?b
 
 // Returns true if both inputs are identical
 // eql(MaybeBool.none,             MaybeBool.none            ) -> true
+// eql(MaybeBool.some(Bool.false), MaybeBool.none            ) -> false
+// eql(MaybeBool.some(Bool.true),  MaybeBool.some(Bool.false)) -> false
 // eql(MaybeBool.some(Bool.false), MaybeBool.some(Bool.false)) -> true
 eql(a: MaybeBool, b: MaybeBool): Bool
-  case a
-  {
-    none:
-      case b
-      {
-        none: Bool.true
-        some: Bool.false
-      }
-    some:
-      case b
-      {
-        none: Bool.false
-        some: 
-          case a.value b.value
-          {
-            false false: Bool.true
-            true true: Bool.true
-          } default Bool.false
-      }
-  }
+  ?c
 
 // Returns the value inside the MaybeBool.
 // If there is no value contained, returns v instead
 extract(a: MaybeBool, v: Bool): Bool
-  case a
-  {
-    none: v
-    some: a.value
-  }
+  ?d
 
 // Create a MaybeBool from a Boolean
 // create(Bool.false) -> MaybeBool(Bool.false)
 create(a:Bool): MaybeBool
-  MaybeBool.some(a)
+  ?e
 
 // Returns the first input that is a MaybeBool.some
 // Returns MaybeBool.none if both are MaybeBool.none
-or(a: MaybeBool, b: MaybeBool): MaybeBool 
-  case a
-  {
-    none:
-      case b
-      {
-        none: MaybeBool.none
-        some: MaybeBool.some(b.value)
-      }
-    some: MaybeBool.some(a.value)
-  }
-
-or2(a: MaybeBool, b: MaybeBool) : MaybeBool 
-    case a b
-    {
-      none none: MaybeBool.none
-      none some: b
-    } default a
+or(a: MaybeBool, b: MaybeBool) : MaybeBool 
+  ?f
 
 
-or3(a: MaybeBool, b: MaybeBool) : MaybeBool  
-  case a
-  {
-    none: b
-    some: a
-  }
-
-or4(a: MaybeBool, b: MaybeBool): MaybeBool 
-  case a
-  {
-    none: b
-    some: MaybeBool.some(a.value)
+ex_01: IO<Unit>
+  IO {
+    Tests._01.is_none(is_none)
+    Tests._01.is_some(is_some)
+    Tests._01.eql(eql)
+    Tests._01.extract(extract)
+    Tests._01.create(create)
+    Tests._01.or(or)
   }
