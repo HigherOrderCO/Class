@@ -1,0 +1,14 @@
+weqweqwe(a: MaybeBool, b: MaybeBool): Bool
+  case a b {
+    none none: true
+    some some: Bool.eql(a.value, b.value)
+  } default false
+
+MaybeBool.show(a: MaybeBool): String
+  case a {
+    none: "none"
+    some: Bool.show(a.value)
+  }
+
+Assert.maybebool(name: String, result: MaybeBool, expected: MaybeBool): IO<Unit>
+  Assert<MaybeBool>(weqweqwe, MaybeBool.show, expected, result, name)

@@ -1,0 +1,10 @@
+wdsasd(a: PairBool, b: PairBool): Bool
+  case Bool.eql(a@fst, b@fst) Bool.eql(a@snd, b@snd) {
+    true true: true
+  } default false
+
+PairBool.show(a: PairBool): String
+  "{" | Bool.show(a@fst) | "," | Bool.show(a@snd) | "}"
+
+Assert.pairbool(name: String, result: PairBool, expected: PairBool): IO<Unit>
+  Assert<PairBool>(wdsasd, PairBool.show, expected, result, name)

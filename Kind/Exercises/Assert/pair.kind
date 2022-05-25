@@ -1,0 +1,19 @@
+Pair.eql<A: Type, B: Type>(e_fst: A -> A -> Bool, e_snd: B -> B -> Bool, a: Pair<A, B>, b: Pair<A, B>): Bool
+  e_fst(a@fst, b@fst) && e_snd(a@snd, b@snd)
+
+Pair.show<A: Type, B: Type>(s_fst: A -> String, s_snd: B -> String a: Pair<A, B>): String
+  "{" | s_fst(a@fst) | "," | s_snd(a@snd) | "}"
+
+Assert.pair<A: Type, B: Type>(
+  pair_functions:
+    Pair<
+      Pair<A -> A -> Bool, A -> String>
+      Pair<B -> B -> Bool, B -> String>>
+  name: String
+  result: Pair<A, B>
+  expected: Pair<A, B>
+): IO<Unit>
+  let {fst, snd} = pair_functions
+  let eql  = Pair.eql<A,  B>(fst@fst, snd@fst)
+  let show = Pair.show<A, B>(fst@snd, snd@snd)
+  Assert<Pair<A, B>>(eql, show, expected, result, name)
