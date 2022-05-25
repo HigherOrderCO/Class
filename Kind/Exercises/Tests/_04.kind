@@ -1,0 +1,141 @@
+Tests._04.dbl(dbl: Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("dbl 0",  dbl( 0),   0)
+    Assert.nat("dbl 1",  dbl( 1),   2)
+    Assert.nat("dbl 8",  dbl( 8),  16)
+    Assert.nat("dbl 97", dbl(97), 194)
+    IO.print("dbl: All terms tested")
+  }
+
+Tests._04.add(add: Nat -> Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("add 0 0",     add(0,     0),   0)
+    Assert.nat("add 0 3",     add(0,     3),   3)
+    Assert.nat("add 3 0",     add(3,     0),   3)
+    Assert.nat("add 1 66",    add(1,    66),  67)
+    Assert.nat("add 66 1",    add(66,    1),  67)
+    Assert.nat("add 123 321", add(123, 321), 444)
+    IO.print("add: All terms tested")
+  }
+
+Tests._04.mul(mul: Nat -> Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("mul 0 0",     mul(0,   0),   0)
+    Assert.nat("mul 0 3",     mul(0,   3),   0)
+    Assert.nat("mul 3 0",     mul(3,   0),   0)
+    Assert.nat("mul 1 66",    mul(1,  66),  66)
+    Assert.nat("mul 66 1",    mul(66,  1),  66)
+    Assert.nat("mul 11 11",   mul(11, 11), 121)
+    IO.print("mul: All terms tested")
+  }
+
+Tests._04.sub(sub: Nat -> Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("sub 0 0",    sub(0,    0),   0)
+    Assert.nat("sub 0 3",    sub(0,    3),   0)
+    Assert.nat("sub 3 0",    sub(3,    0),   3)
+    Assert.nat("sub 10 66",  sub(10,  66),   0)
+    Assert.nat("sub 66 10",  sub(66,  10),  56)
+    Assert.nat("sub 110 10", sub(110, 10), 100)
+    IO.print("sub: All terms tested")
+  }
+
+Tests._04.fac(fac: Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("fac 0", fac(0),   1)
+    Assert.nat("fac 1", fac(1),   1)
+    Assert.nat("fac 2", fac(2),   2)
+    Assert.nat("fac 3", fac(3),   6)
+    Assert.nat("fac 4", fac(4),  24)
+    Assert.nat("fac 5", fac(5), 120)
+    Assert.nat("fac 6", fac(6), 720)
+    IO.print("fac: All terms tested")
+  }
+
+Tests._04.eql(eql: Nat -> Nat -> Bool): IO<Unit>
+  IO {
+    Assert.bool("eql 0 3",    eql(0,    3), false)
+    Assert.bool("eql 3 0",    eql(3,    0), false)
+    Assert.bool("eql 1 66",   eql(10,  66), false)
+    Assert.bool("eql 66 1",   eql(66,  10), false)
+    Assert.bool("eql 110 10", eql(110, 10), false)
+    Assert.bool("eql 0 0",    eql(0,    0),  true)
+    Assert.bool("eql 50 50",  eql(50,  50),  true)
+    IO.print("eql: All terms tested")
+  }
+
+Tests._04.gtn(gtn: Nat -> Nat -> Bool): IO<Unit>
+  IO {
+    Assert.bool("gtn 0 3",    gtn(0,    3), false)
+    Assert.bool("gtn 3 0",    gtn(3,    0),  true)
+    Assert.bool("gtn 1 66",   gtn(10,  66), false)
+    Assert.bool("gtn 66 10",  gtn(66,  10),  true)
+    Assert.bool("gtn 110 10", gtn(110, 10),  true)
+    Assert.bool("gtn 0 0",    gtn(0,    0), false)
+    Assert.bool("gtn 50 50",  gtn(50,  50), false)
+    IO.print("gtn: All terms tested")
+  }
+
+
+Tests._04.ltn(ltn: Nat -> Nat -> Bool): IO<Unit>
+  IO {
+    Assert.bool("ltn 0 3",    ltn(0,    3),  true)
+    Assert.bool("ltn 3 0",    ltn(3,    0), false)
+    Assert.bool("ltn 10 66",  ltn(10,  66),  true)
+    Assert.bool("ltn 66 10",  ltn(66,  10), false)
+    Assert.bool("ltn 110 10", ltn(110, 10), false)
+    Assert.bool("ltn 0 0",    ltn(0,    0), false)
+    Assert.bool("ltn 50 50",  ltn(50,  50), false)
+    IO.print("ltn: All terms tested")
+  }
+
+Tests._04.min(min: Nat -> Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("min 0 3",    min(0,    3),  0)
+    Assert.nat("min 3 0",    min(3,    0),  0)
+    Assert.nat("min 10 66",  min(10,  66), 10)
+    Assert.nat("min 66 10",  min(66,  10), 10)
+    Assert.nat("min 110 10", min(110, 10), 10)
+    Assert.nat("min 0 0",    min(0,    0),  0)
+    Assert.nat("min 50 50",  min(50,  50), 50)
+    IO.print("min: All terms tested")
+  }
+
+Tests._04.max(max: Nat -> Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("max 0 3",    max(0,    3),   3)
+    Assert.nat("max 3 0",    max(3,    0),   3)
+    Assert.nat("max 10 66",  max(10,  66),  66)
+    Assert.nat("max 66 10",  max(66,  10),  66)
+    Assert.nat("max 110 10", max(110, 10), 110)
+    Assert.nat("max 0 0",    max(0,    0),   0)
+    Assert.nat("max 50 50",  max(50,  50),  50)
+    IO.print("max: All terms tested")
+  }
+
+Tests._04.hlf(hlf: Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("hlf 0",   hlf(0),     0)
+    Assert.nat("hlf 1",   hlf(1),     0)
+    Assert.nat("hlf 2",   hlf(2),     1)
+    Assert.nat("hlf 3",   hlf(3),     1)
+    Assert.nat("hlf 4",   hlf(4),     2)
+    Assert.nat("hlf 5",   hlf(5),     2)
+    Assert.nat("hlf 6",   hlf(6),     3)
+    Assert.nat("hlf 60",  hlf(60),   30)
+    Assert.nat("hlf 61",  hlf(61),   30)
+    Assert.nat("hlf 500", hlf(500), 250)
+    IO.print("hlf: All terms tested")
+  }
+
+Tests._04.div(div: Nat -> Nat -> Nat): IO<Unit>
+  IO {
+    Assert.nat("div 0 3",    div(0  ,  3),   0)
+    Assert.nat("div 3 0",    div(3  ,  0),   0)
+    Assert.nat("div 1 66",   div(1  , 66),   0)
+    Assert.nat("div 66 1",   div(66 ,  1),  66)
+    Assert.nat("div 66 1",   div(66 , 10),   6)
+    Assert.nat("div 110 10", div(110, 10),  11)
+    Assert.nat("div 0 0",    div(0  ,  0),   0)
+    IO.print("div: All terms tested")
+  }
