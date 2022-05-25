@@ -1,0 +1,96 @@
+falseFalse: PairBool
+  PairBool.new(false, false)
+
+falseTrue: PairBool
+  PairBool.new(false, true)
+
+trueFalse: PairBool
+  PairBool.new(true, false)
+
+trueTrue: PairBool
+  PairBool.new(true, true)
+
+
+Tests._02.fst(fst: PairBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("fst {false,false}", fst(falseFalse), false)
+    Assert.bool("fst {false,true}",  fst( falseTrue), false)
+    Assert.bool("fst {true,false}",  fst( trueFalse),  true)
+    Assert.bool("fst {true,true}",   fst(  trueTrue),  true)
+    IO.print("fst: All terms tested")
+  }
+
+
+Tests._02.snd(snd: PairBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("snd {false,false}", snd(falseFalse), false)
+    Assert.bool("snd {false,true}",  snd( falseTrue),  true)
+    Assert.bool("snd {true,false}",  snd( trueFalse), false)
+    Assert.bool("snd {true,true}",   snd(  trueTrue),  true)
+    IO.print("snd: All terms tested")
+  }
+
+Tests._02.eql_elements(eql_elements: PairBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("eql_elements {false,false}", eql_elements(falseFalse),  true)
+    Assert.bool("eql_elements {false,true}",  eql_elements( falseTrue), false)
+    Assert.bool("eql_elements {true,false}",  eql_elements( trueFalse), false)
+    Assert.bool("eql_elements {true,true}",   eql_elements(  trueTrue),  true)
+    IO.print("eql_elements: All terms tested")
+  }
+
+Tests._02.eql(eql: PairBool -> PairBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("eql {false,false} {false,false}", eql(falseFalse, falseFalse),  true)
+    Assert.bool("eql {true,true} {true,true}",     eql(trueTrue,     trueTrue),  true)
+    Assert.bool("eql {false,true} {false,true}",   eql(falseTrue,   falseTrue),  true)
+    Assert.bool("eql {true,false} {true,false}",   eql(trueFalse,   trueFalse),  true)
+
+    Assert.bool("eql {false,false} {true,false}",  eql(falseFalse,  trueFalse), false)
+    Assert.bool("eql {true,false} {false,false}",  eql(trueFalse,  falseFalse), false)
+    Assert.bool("eql {true,true} {true,false}",    eql(trueTrue,    trueFalse), false)
+    Assert.bool("eql {true,false} {true,true}",    eql(trueFalse,    trueTrue), false)
+    IO.print("eql: All terms tested")
+  }
+
+Tests._02.not_eql(not_eql: PairBool -> PairBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("not_eql {false,false} {false,false}", not_eql(falseFalse, falseFalse), false)
+    Assert.bool("not_eql {true,true} {true,true}",     not_eql(trueTrue,     trueTrue), false)
+    Assert.bool("not_eql {false,true} {false,true}",   not_eql(falseTrue,   falseTrue), false)
+    Assert.bool("not_eql {true,false} {true,false}",   not_eql(trueFalse,   trueFalse), false)
+
+    Assert.bool("not_eql {false,false} {true,false}",  not_eql(falseFalse,  trueFalse),  true)
+    Assert.bool("not_eql {true,false} {false,false}",  not_eql(trueFalse,  falseFalse),  true)
+    Assert.bool("not_eql {true,true} {true,false}",    not_eql(trueTrue,    trueFalse),  true)
+    Assert.bool("not_eql {true,false} {true,true}",    not_eql(trueFalse,    trueTrue),  true)
+    IO.print("not_eql: All terms tested")
+  }
+
+
+Tests._02.create(create: Bool -> Bool -> PairBool): IO<Unit>
+  IO {
+    Assert.pairbool("create false false", create(false, false), falseFalse)
+    Assert.pairbool("create false true",  create(false,  true),  falseTrue)
+    Assert.pairbool("create true false",  create(true,  false),  trueFalse)
+    Assert.pairbool("create true true",   create(true,   true),   trueTrue)
+    IO.print("create: All terms tested")
+  }
+
+Tests._02.neg(neg: PairBool -> PairBool): IO<Unit>
+  IO {
+    Assert.pairbool("neg {false,false}", neg(falseFalse),   trueTrue)
+    Assert.pairbool("neg {false,true}",  neg( falseTrue),  trueFalse)
+    Assert.pairbool("neg {true,false}",  neg( trueFalse),  falseTrue)
+    Assert.pairbool("neg {true,true}",   neg(  trueTrue), falseFalse)
+    IO.print("neg: All terms tested")
+  }
+
+Tests._02.swap(swap: PairBool -> PairBool): IO<Unit>
+  IO {
+    Assert.pairbool("swap {false,false}", swap(falseFalse),  falseFalse)
+    Assert.pairbool("swap {false,true}",  swap( falseTrue),   trueFalse)
+    Assert.pairbool("swap {true,false}",  swap( trueFalse),   falseTrue)
+    Assert.pairbool("swap {true,true}",   swap(  trueTrue),    trueTrue)
+    IO.print("swap: All terms tested")
+  }
