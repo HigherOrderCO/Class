@@ -1,0 +1,247 @@
+
+e0: Bits
+  Bits.o(Bits.e)
+
+e1: Bits
+  Bits.i(Bits.e)
+
+e11: Bits
+  Bits.i(Bits.i(Bits.e))
+
+e110: Bits
+  Bits.o(Bits.i(Bits.i(Bits.e)))
+
+e100: Bits
+  Bits.o(Bits.o(Bits.i(Bits.e)))
+
+e1100: Bits
+  Bits.o(Bits.o(Bits.i(Bits.i(Bits.e))))
+
+e1111: Bits
+  Bits.i(Bits.i(Bits.i(Bits.i(Bits.e))))
+
+e1000: Bits
+  Bits.o(Bits.o(Bits.o(Bits.i(Bits.e))))
+  
+e1010: Bits
+  Bits.o(Bits.i(Bits.o(Bits.i(Bits.e))))
+  
+e1001: Bits
+  Bits.i(Bits.o(Bits.o(Bits.i(Bits.e))))
+
+e1101: Bits  
+  Bits.i(Bits.o(Bits.i(Bits.i(Bits.e))))
+  
+e111: Bits
+  Bits.i(Bits.i(Bits.i(Bits.e)))
+
+e11100: Bits
+    Bits.o(Bits.o(Bits.i(Bits.i(Bits.i(Bits.e)))))
+
+e11001: Bits
+  Bits.i(Bits.o(Bits.o(Bits.i(Bits.i(Bits.e)))))
+
+e10010: Bits
+  Bits.o(Bits.i(Bits.o(Bits.o(Bits.i(Bits.e))))) 
+
+e10100: Bits
+  Bits.o(Bits.o(Bits.i(Bits.o(Bits.i(Bits.e)))))
+
+e110001: Bits
+  Bits.i(Bits.o(Bits.o(Bits.o(Bits.i(Bits.i(Bits.e))))))
+
+e: Bits
+  Bits.e
+
+e10: Bits
+  Bits.o(Bits.i(Bits.e))
+
+e00: Bits
+  Bits.o(Bits.o(Bits.e))
+e01: Bits
+  Bits.i(Bits.o(Bits.e))
+
+e0011: Bits
+  Bits.i(Bits.i(Bits.o(Bits.o(Bits.e))))
+
+e0101: Bits
+  Bits.i(Bits.o(Bits.i(Bits.o(Bits.e)))) 
+
+e0001: Bits
+  Bits.i(Bits.o(Bits.o(Bits.o(Bits.e))))
+
+e01001: Bits
+  Bits.i(Bits.o(Bits.o(Bits.i(Bits.o(Bits.e)))))
+
+
+Tests._07.is_empty(is_empty: Bits -> Bool): IO<Unit>
+  IO {
+    Assert.bool("is empty 11",   is_empty(e11),   false)
+    Assert.bool("is empty 110",  is_empty(e110),  false)
+    Assert.bool("is empty 1100", is_empty(e1100), false)
+    Assert.bool("is empty 1111", is_empty(e1111), false)
+    Assert.bool("is empty e",    is_empty(e),      true)
+    IO.print("is_empty: All terms tested")
+  }
+
+Tests._07.tail(tail: Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("tail 11",   tail(e11),     e1)
+    Assert.bits("tail 110",  tail(e110),   e11)
+    Assert.bits("tail 1100", tail(e1100), e110)
+    Assert.bits("tail 1111", tail(e1111), e111)
+    IO.print("tail: All terms tested")
+  }
+
+Tests._07.not(nott: Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("not 11",   nott(  e11),   e00)
+    Assert.bits("not 1100", nott(e1100), e0011)
+    IO.print("not: All terms tested")
+  }
+
+Tests._07.inc(inc: Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("inc 10", inc(e10),       e11)
+    Assert.bits("inc 111", inc(e111),   e1000)
+    Assert.bits("inc 1000", inc(e1000), e1001)
+    IO.print("inc: All terms tested")
+  }
+
+Tests._07.dec(dec: Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("dec 11",   dec(  e11),   e10)
+    Assert.bits("dec 1000", dec(e1000),  e111)
+    Assert.bits("dec 1001", dec(e1001), e1000)
+    Assert.bits("dec 1",    dec(   e1),    e0)
+    Assert.bits("dec 0",    dec(   e0),     e)
+    Assert.bits("dec e",    dec(    e),     e)
+    IO.print("dec: All terms tested")
+  }
+
+Tests._07.concat(concat: Bits -> Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("concat 11 11",  concat(e11,  e11),  e1111)
+    Assert.bits("concat 1 1",    concat(e1,    e1),    e11)
+    Assert.bits("concat 10 10",  concat(e10,  e10),  e1010)
+    Assert.bits("concat 100 10", concat(e100, e10), e10100)
+    IO.print("concat: All terms tested")
+  }
+
+
+Tests._07.add(add: Bits -> Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("add 10 10",    add(e10,    e10),   e100)
+    Assert.bits("add 10 1",     add(e10,     e1),    e11)
+    Assert.bits("add 111 1",    add(e111,    e1),  e1000)
+    Assert.bits("add 111 11",   add(e111,   e11),  e1010)
+    Assert.bits("add 11001 11", add(e11001, e11), e11100)
+    Assert.bits("add 0 0",      add(e0,      e0),     e0)
+    Assert.bits("add e e",      add(e,        e),      e)
+    Assert.bits("add 0 e",      add(e0,       e),     e0)
+    Assert.bits("add e 0",      add(e,       e0),     e0)
+    Assert.bits("add 10 e",     add(e10,      e),    e10)
+    Assert.bits("add e 10",     add(e,       e10),   e10)
+    IO.print("add: All terms tested")
+  }
+
+Tests._07.and(and: Bits -> Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("and 11 11",     and(e11,     e11),   e11)
+    Assert.bits("and 11 110",    and(e11,    e110),   e10)
+    Assert.bits("and 10 10",     and(e10,     e10),   e10)
+    Assert.bits("and e e",       and(e,         e),     e)
+    Assert.bits("and 10 e",      and(e10,       e),     e)
+    Assert.bits("and e 10",      and(e,       e10),     e)
+    Assert.bits("and 1111 1100", and(e1111, e1100), e1100)
+    IO.print("and: All terms tested")
+  }
+
+Tests._07.or(or: Bits -> Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("or 11 11",       or(e11,      e11),    e11)
+    Assert.bits("or 11 110",      or(e11,     e110),    e11)
+    Assert.bits("or 10 10",       or(e10,      e10),    e10)
+    Assert.bits("or e e",         or(e,          e),      e)
+    Assert.bits("or 10 e",        or(e10,        e),      e)
+    Assert.bits("or e 10",        or(e,         e10),     e)
+    Assert.bits("or 1111 1100",   or(e1111,   e1100), e1111)
+    Assert.bits("or 110001 1100", or(e110001, e1100), e1101)
+    IO.print("or: All terms tested")
+  }
+
+Tests._07.eql(eql: Bits -> Bits -> Bool): IO<Unit>
+  IO {
+    Assert.bool("eql 11 11", eql(e11,  e11),  true)
+    Assert.bool("eql 11 1",  eql(e11, e110), false)
+    Assert.bool("eql 10 10", eql(e10,  e10),  true)
+    IO.print("eql: All terms tested")
+  }
+
+
+Tests._07.reverse(reverse: Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("reverse 11",    reverse(   e11),    e11)
+    Assert.bits("reverse 10",    reverse(   e10),    e01)
+    Assert.bits("reverse 10010", reverse(e10010), e01001)
+    IO.print("reverse: All terms tested")
+  }
+
+
+Tests._07.length(length: Bits -> Nat): IO<Unit>
+  IO {
+    Assert.nat("length e",    length(    e), 0)
+    Assert.nat("length 0",    length(   e0), 1)
+    Assert.nat("length 11",   length(  e11), 2)
+    Assert.nat("length 1000", length(e1000), 4)
+    Assert.nat("length 111",  length( e111), 3)
+    IO.print("lenght: All terms tested")
+  }
+
+Tests._07.mul(mul: Bits -> Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("mul 100 10",             mul(e100,    e10),   e1000)
+    Assert.bits("mul 100 1",              mul(e100,     e1),    e100)
+    Assert.bits("mul 100 0",              mul(e100,     e0),      e0)
+    Assert.bits("mul 100 e",              mul(e100,      e),       e)
+    Assert.bits("mul 0 100",              mul(e0,     e100),      e0)
+    Assert.bits("mul e e",                mul(e,         e),       e)
+    Assert.bits("mul e 100",              mul(e,      e100),       e)
+    Assert.bits("mul 0 0",                mul(e0,       e0),      e0)
+    Assert.bits("mul 0 e",                mul(e100,      e),       e)
+    Assert.bits("mul 11 11",              mul(e11,     e11),   e1001)
+    Assert.bits("mul 111 111",            mul(e111,   e111), e110001)
+    Assert.bits("BONUS: mul 0011 0011",   mul(e0011, e0011),   e1001)
+    Assert.bits("BONUS.2: mul 0101 0101", mul(e0101, e0101),  e11001)
+    IO.print("mul: All terms tested")
+  }
+
+
+Tests._07.drop(drop: Nat -> Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("drop 1 11",     drop(1,     e11),    e1)
+    Assert.bits("drop 1 1100",   drop(1,   e1100),  e110)
+    Assert.bits("drop 1 111",    drop(1,    e111),   e11)
+    Assert.bits("drop 1 110",    drop(1,    e110),   e11)
+    Assert.bits("drop 2 111",    drop(2,    e111),    e1)
+    Assert.bits("drop 1 1001",   drop(1,   e1001),  e100)
+    Assert.bits("drop 0 1001",   drop(0,   e1001), e1001)
+    Assert.bits("drop 0 e",      drop(0,       e),     e)
+    Assert.bits("drop 1 e",      drop(1,       e),     e)
+    Assert.bits("drop 1 0",      drop(1,      e0),     e)
+    Assert.bits("drop 4 110001", drop(4, e110001),   e11)
+    Assert.bits("drop 3 110001", drop(3, e110001),  e110)
+    IO.print("drop: All terms tested")
+  }
+
+
+Tests._07.take(take: Nat -> Bits -> Bits): IO<Unit>
+  IO {
+    Assert.bits("take 3 1100",   take(3,   e1100),  e100)
+    Assert.bits("take 1 1001",   take(1,   e1001),    e1)
+    Assert.bits("take 2 1001",   take(2,   e1001),   e01)
+    Assert.bits("take 2 e",      take(2,       e),     e)
+    Assert.bits("take 0 1001",   take(0,   e1001),     e)
+    Assert.bits("take 4 110001", take(4, e110001), e0001)
+    IO.print("take: All terms tested")
+  }
