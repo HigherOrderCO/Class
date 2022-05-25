@@ -12,21 +12,6 @@ type TicTacToe {
   )
 }
 
-Ttt.board: Type
-  List<List<Maybe<TicTacToe.Piece>>>
-
-  
-  
-
-SBoard: Ttt.board
-  [
-    [Maybe.none<TicTacToe.Piece>, Maybe.none<TicTacToe.Piece>, Maybe.none<TicTacToe.Piece>],
-    [Maybe.none<TicTacToe.Piece>, Maybe.none<TicTacToe.Piece>, Maybe.none<TicTacToe.Piece>],
-    [Maybe.none<TicTacToe.Piece>, Maybe.none<TicTacToe.Piece>, Maybe.none<TicTacToe.Piece>]
-  ]
-
-
-
 // Example of a finished game
 // TicTacToe.new(
 //   7,
@@ -37,27 +22,17 @@ SBoard: Ttt.board
 //   ]
 // )
 
-// 0 0 = 0
-// 0 1 = 1
-// 0 2 = 2
-// 1 0 = 3
-// 1 1 = 4
-// 1 2 = 5
-// 2 0 = 6
-// 2 1 = 7
-// 2 2 = 8
 
 // The initial board state
 // An empty board
 TicTacToe.init: TicTacToe
-  TicTacToe.new(0, SBoard)
-  
+  ?a
 
 // Gets the state of a given position in the board
 // x = Position in the row
 // y = Position in the column
 TicTacToe.get(x: Nat, y: Nat, game: TicTacToe): Maybe<TicTacToe.Piece>
-  List.get!(x, List.get!(y, game@board) <> [] ) <> none
+  ?b
 
 // If possible, converts the user input to a coordinate {x, y}
 // A valid inputs is any pair of 2 numbers separated with a space:
@@ -67,220 +42,47 @@ TicTacToe.get(x: Nat, y: Nat, game: TicTacToe): Maybe<TicTacToe.Piece>
 // "banana"
 // "   "
 TicTacToe.read(input: String): Maybe<Pair<Nat, Nat>>
-	switch String.eql(input)
-    {
-      "0 0":  Maybe.some!({0, 2})
-      "0 1":  Maybe.some!({0, 1})
-      "0 2":  Maybe.some!({0, 0})
-      "1 0":  Maybe.some!({1, 2})
-      "1 1":  Maybe.some!({1, 1})
-      "1 2":  Maybe.some!({1, 0})
-      "2 0":  Maybe.some!({2, 2})
-      "2 1":  Maybe.some!({2, 1})
-      "2 2":  Maybe.some!({2, 0})
-      "1":    Maybe.some!({0, 2})
-      "2":    Maybe.some!({1, 2})
-      "3":    Maybe.some!({2, 2})
-      "4":    Maybe.some!({0, 1})
-      "5":    Maybe.some!({1, 1})
-      "6":    Maybe.some!({2, 1})
-      "7":    Maybe.some!({0, 0})  
-      "8":    Maybe.some!({1, 0})
-      "9":    Maybe.some!({2, 0})
-    } default Maybe.none!
+	?c
 
 // Checks if a movement is valid
 // A valid movement is any movement inside the 3x3 board if the tile is unnocupied
 TicTacToe.is_move_valid(coord: Pair<Nat, Nat>, game: TicTacToe): Bool
-  Maybe.is_none!(TicTacToe.get(coord@fst, coord@snd, game))
+	?d
 
 // Who is the next one to play?
 TicTacToe.next_piece(game: TicTacToe): TicTacToe.Piece
-  if Nat.is_even(game@turn) then TicTacToe.Piece.X else TicTacToe.Piece.O
-
+  ?e
 
 
 // From an input, adds X or O (decided from TicTacToe.next_piece) at given location and increments the turn
 TicTacToe.move(coord: Pair<Nat, Nat>, game: TicTacToe): TicTacToe
-  let x = coord@fst
-  let y = coord@snd
-  let piece = Maybe.some!(TicTacToe.next_piece(game))
-  let in_list = List.get!(y, game@board) 
-  without in_list: game
-  TicTacToe.new(
-    Nat.succ(game@turn),
-    List.set!(y, List.set!(x, piece, in_list), game@board)
-  )
+  ?f
 
 // Checks if 2 pieces are equal
 TicTacToe.Piece.eql(a: Maybe<TicTacToe.Piece>, b: Maybe<TicTacToe.Piece>): Bool
-	Maybe.eql!(TicTacToe.eql, a, b)
-
-
-
-TicTacToe.eql(a: TicTacToe.Piece, b: TicTacToe.Piece): Bool
-  case a b
-  {
-    O O: Bool.true
-    O X: Bool.false
-    X O: Bool.false
-    X X: Bool.true
-  }
-
-TicTacToe_X(a: Maybe<TicTacToe.Piece>): Bool
-  case a
-  {
-    none: Bool.false
-    some: case a.value
-          {
-            O: Bool.false
-            X: Bool.true
-          }
-  }
-
-TicTacToe_O(a: Maybe<TicTacToe.Piece>): Bool
-    case a
-  {
-    none: Bool.false
-    some: case a.value
-          {
-            O: Bool.true
-            X: Bool.false
-          }
-  }
- 
+	?g
 
 // Determines a winner if there is one
 TicTacToe.winner(game: TicTacToe): Maybe<TicTacToe.Piece>
-  let y00  =  List.get!(0, List.get!(2, game@board) <> []) <> none //gets a piece of the 0 2 coord
-  let y01  =  List.get!(0, List.get!(1, game@board) <> []) <> none
-  let y02  =  List.get!(0, List.get!(0, game@board) <> []) <> none
-  let y10  =  List.get!(1, List.get!(2, game@board) <> []) <> none
-  let y11  =  List.get!(1, List.get!(1, game@board) <> []) <> none
-  let y12  =  List.get!(1, List.get!(0, game@board) <> []) <> none
-  let y20  =  List.get!(2, List.get!(2, game@board) <> []) <> none
-  let y21  =  List.get!(2, List.get!(1, game@board) <> []) <> none
-  let y22  =  List.get!(2, List.get!(0, game@board) <> []) <> none
-  let y0   =  List.all!(TicTacToe_X, [y00, y01, y02]) //makes a list of vertical aligned pieces and apply a function to check if all of them are X
-  let y1   =  List.all!(TicTacToe_X, [y10, y11, y12])
-  let y2   =  List.all!(TicTacToe_X, [y20, y21, y22])
-  let y3   =  List.all!(TicTacToe_O, [y00, y01, y02]) //makes a list of vertical aligned pieces and apply a function to check if all of them are O
-  let y4   =  List.all!(TicTacToe_O, [y10, y11, y12])
-  let y5   =  List.all!(TicTacToe_O, [y20, y21, y22])
-  let xy   =  List.all!(TicTacToe_X, [y02, y11, y20]) //same as vertical but for diagonal aligned pieces
-  let yx   =  List.all!(TicTacToe_X, [y22, y11, y00])
-  let xy1  =  List.all!(TicTacToe_O, [y02, y11, y20]) //same as diagonal but for piece.O
-  let yx2  =  List.all!(TicTacToe_O, [y22, y11, y00])
-  if List.all!(TicTacToe_X, List.get!(2, game@board) <> []) then  //gets one of the 3 possible lists (determined by the first arg of the list.get) which compose the horizontal lines and apply a function to check if all of them are X, if true, returns X piece
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if List.all!(TicTacToe_X, List.get!(1, game@board) <> []) then 
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if List.all!(TicTacToe_X, List.get!(0, game@board) <> []) then 
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if List.all!(TicTacToe_O, List.get!(2, game@board) <> []) then  //gets one of the 3 possible lists which compose the horizontal lines and apply a function to check if all of them are O, if true, returns O piece
-    Maybe.some!(TicTacToe.Piece.O) 
-  else
-  if List.all!(TicTacToe_O, List.get!(1, game@board) <> []) then 
-    Maybe.some!(TicTacToe.Piece.O)
-  else
-  if List.all!(TicTacToe_O, List.get!(0, game@board) <> []) then 
-    Maybe.some!(TicTacToe.Piece.O)
-  else
-  if y0 then
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if y1 then
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if y2 then
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if y3 then
-    Maybe.some!(TicTacToe.Piece.O)
-  else
-  if y4 then
-    Maybe.some!(TicTacToe.Piece.O)
-  else
-  if y5 then
-    Maybe.some!(TicTacToe.Piece.O)
-  else
-  if xy then
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if yx then
-    Maybe.some!(TicTacToe.Piece.X)
-  else
-  if xy1 then
-    Maybe.some!(TicTacToe.Piece.O)
-  else
-  if yx2 then
-    Maybe.some!(TicTacToe.Piece.O)
-  else
-    Maybe.none!
-  
+  ?h
 
-// let winnerstate = 
-// [
-//   [0, 1, 2]
-//   [3, 4, 5]
-//   [6, 7, 8]
-
-//   [0, 3, 6]
-//   [1, 4, 7]
-//   [2, 5, 8]
-
-//   [0, 4, 8]
-//   [2, 4, 6]
-// ]
 // Converts the piece into a text to be shown
 TicTacToe.Piece.show(a: Maybe<TicTacToe.Piece>): String
-  case a
-  {
-    none: "   "
-    some: 
-      if TicTacToe_X(a) then 
-        " X "
-      else
-        " O "
-  }
+  ?i
 
 // Shows the board
 // Example:
 //
-//  X | X | O   00 | 10 | 20 
-// ----------- -----------
-//  O | O | X   01 | 11 | 21 
-// ----------- -----------
-//  X | O | X   02 | 12 | 22
+//  X | X | O 
+// -----------
+//  O | O | X 
+// -----------
+//  X | O | X 
 //
 TicTacToe.show(game: TicTacToe): String
-  let rx = (x: Nat, y: Nat) 
-    TicTacToe.Piece.show(TicTacToe.get(x, y, game))
-  let x7 = rx(0, 0)
-  let x8 = rx(1, 0)
-  let x9 = rx(2, 0)
-  let x4 = rx(0, 1)
-  let x5 = rx(1, 1)
-  let x6 = rx(2, 1)
-  let x1 = rx(0, 2)
-  let x2 = rx(1, 2)
-  let x3 = rx(2, 2)
+  ?j
 
 
-  //String.concat(String.concat(String.concat(String.concat(" ", x7), " | "), String.concat(x8, " | ")), String.concat(x9, "\n"))
-
-  x7 | "|" | x8 | "|" | x9 | "\n" |
-  "-----------\n"                 |
-  x4 | "|" | x5 | "|" | x6 | "\n" |
-  "-----------\n"                 |
-  x1 | "|" | x2 | "|" | x3 | "\n"
- 
-  
-game_02_ttt:_
-  Test
 Test: IO<Unit>
   IO {
     // Prints the initial board
