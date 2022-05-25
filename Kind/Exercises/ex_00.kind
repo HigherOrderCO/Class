@@ -8,133 +8,73 @@ type Bool {
 // Is true
 // Returns true if input is true
 is_true(a: Bool): Bool
-  a
+  a 
+
 
 // Is false
 // Returns true if input is false
 is_false(a: Bool): Bool
-  case a
-  {
-    true: Bool.false
-    false: Bool.true
-  }
+
 
 // Negation
 // Returns the opposite of a Bool
 neg(b: Bool): Bool 
-  case b
-  {
-    true: Bool.false
-    false: Bool.true
-  }
+
+  ?n
 
 // And
 // Returns true if both inputs are true
 and(a: Bool, b: Bool): Bool
-  case a b
-  {
-    true true: Bool.true
-  }default Bool.false
+
+  ?a
 
 // Or
 // Returs true if any input is true
 or(a: Bool, b: Bool): Bool
-  case a
-  {
-    true: a
-    false: b
-  }
+
+  ?o
 
 // Equal
 // Returs true if both inputs are identical
 eql(a: Bool, b: Bool): Bool
-  case b
-  {
-    true: a
-    false: neg(a)
-  }
+
+  ?e
 
 // Xor
 // Returns true if both inputs are different
 xor(a: Bool, b: Bool): Bool
-  case a
-  {
-    true: 
-      case b
-      {
-        true: Bool.false
-        false: a
-      }
-    false: b
-  }
+
+  ?x
 
 // Nor
 // Returns true if both inputs are false
 nor(a: Bool, b: Bool): Bool
-  case a
-  {
-    true: Bool.false
-    false:
-      case b
-      {
-        true: Bool.false
-        false: Bool.true
-      }
-  }
 
+  ?n2
 
-nor2(a: Bool, b: Bool): Bool
-  case a b
-  {
-    false false: Bool.true
-  } default Bool.false
-
-nor3(a: Bool, b: Bool): Bool
-  neg(or(a, b))
 // Nand
 // Returns false only if both inputs are true
 nand(a: Bool, b: Bool): Bool
-  case a
-  {
-    true: 
-      case b
-      {
-        true: Bool.false
-        false: a
-      }
-    false: Bool.true
-  }
 
-nand2(a: Bool, b: Bool): Bool
-  case a b
-  {
-    true true: Bool.false
-  } default Bool.true
-
-nand3(a: Bool, b: Bool): Bool
-  neg(and(a, b))
+  ?n3
 
 // Xnor
 // Returns true if both inputs are identical
 xnor(a: Bool, b: Bool): Bool
-  case a
-  {
-    true: b
-    false: 
-      case b
-      {
-        true: Bool.false
-        false: Bool.true
-      }
+
+  ?x2
+
+
+ex_00: IO<Unit>
+  IO {
+    Tests._00.is_true(is_true)
+    Tests._00.is_false(is_false)
+    Tests._00.neg(neg)
+    Tests._00.and(and)
+    Tests._00.or(or)
+    Tests._00.eql(eql)
+    Tests._00.xor(xor)
+    Tests._00.nor(nor)
+    Tests._00.nand(nand)
+    Tests._00.xnor(xnor)
   }
-
-xnor2(a: Bool, b: Bool): Bool
-  case a b
-  {
-    true true: Bool.true
-    false false: Bool.true
-  } default Bool.false
-
-xnor3(a: Bool, b: Bool): Bool
-  eql(a, b) //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-    
