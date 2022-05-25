@@ -134,7 +134,7 @@ Tests._04.div(div: Nat -> Nat -> Nat): IO<Unit>
     Assert.nat("div 3 0",    div(3  ,  0),   0)
     Assert.nat("div 1 66",   div(1  , 66),   0)
     Assert.nat("div 66 1",   div(66 ,  1),  66)
-    Assert.nat("div 66 1",   div(66 , 10),   6)
+    Assert.nat("div 66 10",  div(66 , 10),   6)
     Assert.nat("div 110 10", div(110, 10),  11)
     Assert.nat("div 0 0",    div(0  ,  0),   0)
     IO.print("div: All terms tested")
