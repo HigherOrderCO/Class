@@ -1,0 +1,69 @@
+maybeTrue: MaybeBool
+  MaybeBool.some(true)
+
+maybeFalse: MaybeBool
+  MaybeBool.some(false)
+
+maybeNone: MaybeBool
+  MaybeBool.none
+
+
+
+Tests._01.is_none(is_none: MaybeBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("is_none none",  is_none( maybeNone),  true)
+    Assert.bool("is_none true",  is_none( maybeTrue), false)
+    Assert.bool("is_none false", is_none(maybeFalse), false)
+    IO.print("is_none: All terms tested")
+  }
+
+Tests._01.is_some(is_some: MaybeBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("is_some none",  is_some( maybeNone), false)
+    Assert.bool("is_some true",  is_some( maybeTrue),  true)
+    Assert.bool("is_some false", is_some(maybeFalse),  true)
+    IO.print("is_some: All terms tested")
+  }
+
+Tests._01.eql(eql: MaybeBool -> MaybeBool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("eql none none",   eql(maybeNone,   maybeNone),  true)
+    Assert.bool("eql true false",  eql(maybeTrue,  maybeFalse), false)
+    Assert.bool("eql true true",   eql(maybeTrue,   maybeTrue),  true)
+    Assert.bool("eql false false", eql(maybeFalse, maybeFalse),  true)
+    Assert.bool("eql false true",  eql(maybeFalse,  maybeTrue), false)
+    Assert.bool("eql none true",   eql(maybeNone,   maybeTrue), false)
+    Assert.bool("eql false none",  eql(maybeFalse,  maybeNone), false)
+    IO.print("eql: All terms tested")
+  }
+
+Tests._01.extract(extract: MaybeBool -> Bool -> Bool): IO<Unit>
+  IO {
+    Assert.bool("extract none true",   extract(maybeNone,   true),  true)
+    Assert.bool("extract none false",  extract(maybeNone,  false), false)
+    Assert.bool("extract true true",   extract(maybeTrue,   true),  true)
+    Assert.bool("extract false false", extract(maybeFalse, false), false)
+    Assert.bool("extract false true",  extract(maybeFalse,  true), false)
+    IO.print("extract: All terms tested")
+  }
+
+Tests._01.create(create: Bool -> MaybeBool): IO<Unit>
+  IO {
+    Assert.maybebool("create true",  create( true),  maybeTrue)
+    Assert.maybebool("create false", create(false), maybeFalse)
+    IO.print("create: All terms tested")
+  }
+
+Tests._01.or(or: MaybeBool -> MaybeBool -> MaybeBool): IO<Unit>
+  IO {
+    Assert.maybebool("or true true",   or(maybeTrue,   maybeTrue),  maybeTrue)
+    Assert.maybebool("or true false",  or(maybeTrue,  maybeFalse),  maybeTrue)
+    Assert.maybebool("or false true",  or(maybeFalse,  maybeTrue), maybeFalse)
+    Assert.maybebool("or false false", or(maybeFalse, maybeFalse), maybeFalse)
+    Assert.maybebool("or none false",  or(maybeNone,  maybeFalse), maybeFalse)
+    Assert.maybebool("or none true",   or(maybeNone,   maybeTrue),  maybeTrue)
+    Assert.maybebool("or false none",  or(maybeFalse,  maybeNone), maybeFalse)
+    Assert.maybebool("or true none",   or(maybeTrue,   maybeNone),  maybeTrue)
+    Assert.maybebool("or none none",   or(maybeNone,   maybeNone),  maybeNone)
+    IO.print("or: All terms tested")
+  }
