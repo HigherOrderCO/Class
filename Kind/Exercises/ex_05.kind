@@ -7,19 +7,27 @@ type Pair <A: Type, B: Type> {
 // Example:
 // Swaps the elements of a pair
 swap<A: Type, B: Type>(pair: Pair<A,B>): Pair<B,A>
-  ?s
+  case pair {
+	new: Pair.new<B,A>(pair.snd, pair.fst)
+}
 
 // Returns the first element of a pair
 first<A: Type, B: Type>(pair: Pair<A,B>): A
-  ?a
+  case pair {
+	new: pair.fst
+}
 
 // Returns the second element of a pair
 second<A: Type, B: Type>(pair: Pair<A,B>): B
-  ?a
+  case pair {
+	new: pair.snd
+}
 
 // Applies a function to both elements of a Pair
 map<A: Type, B: Type>(fn: A -> B, pair: Pair<A,A>): Pair<B,B>
-  ?a
+  case pair {
+	new: Pair.new<B,B>(fn(pair.fst), fn(pair.snd))
+} 
 
 ex_05:_ 
   IO {

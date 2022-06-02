@@ -7,48 +7,99 @@ type List <A: Type> {
 
 // Returns the head of the List
 head<A: Type>(xs: List<A>): Maybe<A>
-  ?head
+  case xs {
+    nil: Maybe.none<A>
+    cons: Maybe.some<A>(xs.head)
+  }
 
 // Returns the list without the first element
 tail<A: Type>(xs: List<A>): List<A>
-  ?a
+  case xs {
+    nil: xs
+    cons: xs.tail
+  }
 
 // Returns the length of a list
 length<A: Type>(xs: List<A>): Nat
-  ?a
+  case xs {
+    nil: Nat.zero
+    cons: Nat.succ(length<A>(xs.tail))
+  }
 
 // Returns the last element of a list
 last<A: Type>(xs: List<A>): Maybe<A>
-  ?last
+  case xs {
+    nil: Maybe.none<A>
+    cons: case xs.tail {
+      nil: Maybe.some<A>(xs.head)
+      cons: last<A>(xs.tail)
+    }
+  }
 
 // Returns the list without the last element
 init<A: Type>(xs: List<A>): List<A>
-  ?init
+  case xs {
+    nil:  List.nil<A>
+    cons: case xs.tail {
+      nil: List.nil<A>
+      cons: List.cons<A>(xs.head, (init<A>(xs.tail)))
+    }
+  }
 
 // Concatenates two lists
 concat<A: Type>(xs: List<A>, ys: List<A>): List<A>
-  ?a
+  case xs {
+    nil:  ys
+    cons: case xs.tail {
+      nil: List.cons<A>(xs.head, ys)
+      cons: concat<A>(xs.tail, List.cons<A>(xs.head, ys))
+    }
+  }
 
 // Removes n elements from the start of the list
 // List.drop<Nat>(3, [1,2,3,4,5]) -> [4, 5]
 drop<A: Type>(n: Nat, xs: List<A>): List<A>
-  ?drop
+  case n {
+    zero: xs
+    succ: case xs {
+      nil: List.nil<A>
+      cons: drop<A>(n.pred, xs.tail)
+    }
+  }
 
 // Creates a new list with the N first elements of the previous list
 // List.take<Nat>(3, [1,2,3,4,5]) -> [1,2,3]
 take<A: Type>(n: Nat, xs: List<A>): List<A>
-  ?take
+  case n {
+    zero: List.nil<A>
+    succ: case xs {
+      nil: List.nil<A>
+      cons: List.cons<A>(xs.head, take<A>(n.pred, xs.tail))
+    }
+  }
 
 // Applies a function to all elements of a list
 map<A: Type, B: Type>(fn: A -> B, xs: List<A>): List<B>
-  ?a
+  case xs {
+    nil: List.nil<B>
+    cons: case xs.tail {
+      nil: List.nil<B>
+      cons: List.cons<B>(fn(xs.head), map<A,B>(fn, xs.tail))
+    }
+  }
 
 // Returns the same list, with the order reversed
 reverse<A: Type>(xs: List<A>): List<A>
   reverse.go<A>(List.nil<A>, xs)
 
 reverse.go<A: Type>(new_list: List<A>, old_list: List<A>): List<A>
-  ?r
+  case old_list {
+    nil: new_list
+    cons: case old_list.tail {
+      nil: List.cons<A>(old_list.head, new_list)
+      cons: reverse.go<A>(List.cons<A>(old_list.head, new_list), old_list.tail)
+    }
+  }
 
 ex_08: IO<Unit>
   IO {
