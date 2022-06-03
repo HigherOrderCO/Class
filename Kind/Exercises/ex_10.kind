@@ -30,8 +30,10 @@ Char: Type
 //is_upper('A') -> Bool.true
 //is_upper('0') -> Bool.false
 is_upper(x: Char): Bool
-  ?is_upper
-
+  case U16.gte(x, 'A') {
+    false: Bool.false
+    true:  U16.lte(x, 'Z')
+  }
 
 
 //Verifies if the character is Lower Case
@@ -40,8 +42,10 @@ is_upper(x: Char): Bool
 //is_lower('A') -> Bool.false
 //is_lower('0') -> Bool.false
 is_lower(x: Char): Bool
-  ?is_lower
-
+  case U16.gte(x, 'a') {
+    false: Bool.false 
+    true: U16.lte(x, 'z')
+  }
 
 
 //Verifies if the character is a Number-Digit Value
@@ -50,8 +54,10 @@ is_lower(x: Char): Bool
 //is_digit('A') -> Bool.false
 //is_digit('0') -> Bool.true
 is_digit(x: Char): Bool
-  ?is_digit
-
+  case U16.gte(x, '0') {
+    false: Bool.false 
+    true: U16.lte(x, '9')
+  }
 
 
 //Verifies if both of the Characters are the same
@@ -60,8 +66,7 @@ is_digit(x: Char): Bool
 //is_equal('A', '0') -> Bool.false
 //is_equal('0', '0') -> Bool.true
 equal(x: Char, y: Char): Bool
-  ?equal
-
+  U16.eql(x, y)
 
 
 //Transforms Characters into Nat digits
@@ -70,8 +75,10 @@ equal(x: Char, y: Char): Bool
 //to_digit('1') -> Nat.succ(Nat.zero)
 //to_digit('4') -> 4
 to_digit(x: Char): Nat
-  ?to_digit
-
+  case is_digit(x) {
+    false: Nat.zero
+    true: Nat.sub(U16.to_nat(x), 48)
+  }
 
 
 //Transforms all Characters into Lower Case Characters
@@ -80,8 +87,10 @@ to_digit(x: Char): Nat
 //to_lower('B') -> 'b'
 //to_lower('Z') -> 'z'
 to_lower(x: Char): Char
-  ?to_lower
-
+  case is_upper(x) {
+    false: x
+    true: U16.add(x, 32)
+  }
 
 
 //Transforms all Characters into Upper Case Characters
@@ -90,10 +99,10 @@ to_lower(x: Char): Char
 //to_upper('b') -> 'B'
 //to_upper('z') -> 'Z'
 to_upper(x: Char): Char
-  ?to_upper
-
-
-
+  case is_lower(x) {
+    false: x
+    true: U16.sub(x, 32)
+  }
 
 
 //String Type
@@ -119,24 +128,33 @@ type String {
 //concat(a,b) -> "HiHello"
 //concat(b,c) -> "Hellotext"
 concat(xs: String, ys: String): String
-  ?concat
-
+  case xs {
+    nil: ys
+    cons: String.cons(xs.head, concat(xs.tail, ys))
+  }
 
 
 //Applies a Function to all Characters of the String
 
 //map(to_lower, a) -> "hi"
 map(fn: Char -> Char, xs: String): String
-  ?map
-
+  case xs {
+    nil: String.nil
+    cons: String.cons(fn(xs.head), map(fn, xs.tail))
+  }
 
 
 //Converts all Lower Case Caracters in a String to Upper Case
 
 //string_to_upper(c) -> "TEXT"
 string_to_upper(xs: String): String
-  ?to_upper
-
+  case xs {
+    nil: String.nil
+    cons: case is_upper(xs.head) {
+      false: String.cons(to_upper(xs.head), string_to_upper(xs.tail))
+      true: String.cons(xs.head, string_to_upper(xs.tail))
+    }
+  }
 
 
 //Convers the String into bits
@@ -145,8 +163,10 @@ string_to_upper(xs: String): String
 //to_bits(b) -> "0000000001101111 0000000001101100 00000000011011000 000000001100101 0000000001001000"
 //to_bits(c) -> "0000000001110100 0000000001111000 00000000011001010 000000001110100"
 to_bits(xs: String): Bits
-  ?to_bits
-
+  case xs {
+    nil: Bits.e
+    cons: Bits.concat(U16.to_bits(xs.head), to_bits(xs.tail))
+  }
 
 
 //Verifies if two Strings are Equal
@@ -155,8 +175,12 @@ to_bits(xs: String): Bits
 //stringequal(a, b) -> Bool.false
 //stringequal(b, c) -> Bool.false
 stringequal(xs: String, ys: String): Bool
-  ?stringequal
-
+  case xs ys {
+    cons cons: case equal(xs.head, ys.head) {
+      false: Bool.false
+      true: stringequal(xs.tail, ys.tail)
+    }
+  } default Bool.false
 
 
 //Verifies if All String elements are Numbers
@@ -165,9 +189,17 @@ stringequal(xs: String, ys: String): Bool
 //is_nat(b)      -> Bool.false
 //is_nat("1234") -> Bool.true
 is_nat(xs: String): Bool
-  ?is_nat
-
-
+  case xs {
+    nil: Bool.false
+    cons: case is_digit(xs.head) {
+      true: case xs.tail {
+        nil: Bool.true
+        cons: is_nat(xs.tail)
+      }
+      false: Bool.false
+    }
+  }   
+ 
 
 // Takes any elements while the condition is matched.
 
@@ -175,7 +207,15 @@ is_nat(xs: String): Bool
 //take_while(is_lower,    b) -> ""
 //take_while(is_equal('t'), c) -> "t"
 take_while(cond: Char -> Bool, xs: String): String
-  ?take_while
+  case xs {
+    nil:  String.nil
+    cons: 
+       let takecond = cond(xs.head)
+       case takecond {
+         false: String.nil
+         true: String.cons(xs.head, take_while(cond, xs.tail))
+       }
+  }
 
 
 
@@ -183,27 +223,64 @@ take_while(cond: Char -> Bool, xs: String): String
 
 //find(a, "H") -> Maybe.some(0)
 //find(b, "l") -> Maybe.some(2)
-//find(c, "x") -> Maybe.some(2)
 //find(c, "z") -> Maybe.none
+
 find(xs: String, x: Char): Maybe<Nat>
-  ?find
+  find_go(xs, x, Nat.zero)
 
 
-//Filters the String and discards all the Chars that doesn't satisfy given condition 
+find_go(xs: String, x: Char, nro: Nat): Maybe<Nat>
+   case xs {
+     nil: Maybe.none<Nat>
+     cons: case equal(xs.head, x){
+       true: Maybe.some<Nat>(nro)
+       false: find_go(xs.tail, x, Nat.succ(nro))
+     }
+   }
+
+
+//Acha quantas x aparece o caracter -- Fiz assim pq achei q era isso o find, mas depois vi que era o index e nao quantas x aparecia
+findrepeat(xs: String, x: Char): Maybe<Nat>
+  case xs {
+    nil: Maybe.none<Nat>
+    cons: case equal(xs.head, x){
+      true:  Maybe.some<Nat>(Nat.add(Nat.succ(Nat.zero), findaux(findrepeat(xs.tail, x))))
+      false: findrepeat(xs.tail, x)
+    }
+  }
+
+findaux(x: Maybe<Nat>): Nat
+  case x {
+    none: Nat.zero
+    some: x.value
+  }
 
 //filter(is_upper,      a) -> "HI"
 //filter(is_lower,      b) -> "ello"
 //filter(is_equal('t'), c) -> "tt"
 filter(cond: Char -> Bool, xs: String): String
-  ?filter
+  case xs {
+    nil: String.nil
+    cons: 
+      let condbool = cond(xs.head)
+      case condbool {
+        false: filter(cond, xs.tail)
+        true:  String.cons(xs.head, filter(cond, xs.tail))
+      }
+  }
 
 
 //Concatenates all elements of a List of Strings
 
 //flatten([a,b,c]) -> "HIHellotext"
 flatten(lxs: List<String>): String
-  ?flatten
-
+  case lxs {
+    nil:  String.nil
+    cons: case lxs.tail {
+      nil: lxs.head
+      cons: flatten(List.cons<String>(concat(lxs.head, lxs.tail.head), lxs.tail.tail))
+    }
+  }
 
 
 //Drops a n Number of characteres from a String
@@ -212,9 +289,13 @@ flatten(lxs: List<String>): String
 //drop(2, b) -> "llo"
 //drop(3, c) -> "t"
 drop(n: Nat, xs: String): String
-  ?stringdrop
-
-
+  case n{
+    zero: xs
+    succ: case xs {
+      nil: String.nil
+      cons: drop(n.pred, xs.tail)
+    }
+  }
 
 
 //Takes n elements of a String
@@ -223,8 +304,13 @@ drop(n: Nat, xs: String): String
 //take(2, b) ->  "He"
 //take(3, c) ->  "tex"
 take(n: Nat xs: String): String
-  ?stringtake
-
+  case n {
+    zero: xs
+    succ: case xs {
+      nil: String.nil
+      cons: String.cons(xs.head, take(n.pred, xs.tail))
+    }
+  }
 
 
 //Takes a x part of the string after a n Index of values get dropped
@@ -249,26 +335,34 @@ split(xs: String, match: String): List<String>
   ?split
 
 
-ex_10: IO<Unit>
-  IO {
-    Tests._10.is_upper(is_upper)
-    Tests._10.is_lower(is_lower)
-    Tests._10.is_digit(is_digit)
-    Tests._10.equal(equal)
-    Tests._10.to_digit(to_digit)
-    Tests._10.to_lower(to_lower)
-    Tests._10.to_upper(to_upper)
-    Tests._10.concat(concat)
-    Tests._10.drop(drop)
-    Tests._10.take(take)
-    Tests._10.slice(slice)
-    Tests._10.filter(filter)
-    Tests._10.map(map)
-    Tests._10.string_to_upper(string_to_upper)
-    Tests._10.to_bits(to_bits)
-    Tests._10.stringequal(stringequal)
-    Tests._10.is_nat(is_nat)
-    Tests._10.take_while(take_while)
-    Tests._10.find(find) 
-    Tests._10.flatten(flatten)
-  }
+
+ex_10: String // IO<Unit>
+let a = "HI"
+let b = "Hello"
+let c = "text"
+let liststr = List.cons<String>(a, List.cons<String>(b, List.cons<String>(c, List.nil<String>)))
+//concat(a, b)
+flatten(liststr)
+
+//  IO {
+//    Tests._10.is_upper(is_upper)
+//    Tests._10.is_lower(is_lower)
+//    Tests._10.is_digit(is_digit)
+//    Tests._10.equal(equal)
+//    Tests._10.to_digit(to_digit)
+//    Tests._10.to_lower(to_lower)
+//    Tests._10.to_upper(to_upper)
+//    Tests._10.concat(concat)
+//    Tests._10.drop(drop)
+//    Tests._10.take(take)
+//    Tests._10.slice(slice)
+//    Tests._10.filter(filter)
+//   Tests._10.map(map)
+//    Tests._10.string_to_upper(string_to_upper)
+//    Tests._10.to_bits(to_bits)
+//    Tests._10.stringequal(stringequal)
+//    Tests._10.is_nat(is_nat)
+//    Tests._10.take_while(take_while)
+//    Tests._10.find(find) 
+//    Tests._10.flatten(flatten)
+//  }
