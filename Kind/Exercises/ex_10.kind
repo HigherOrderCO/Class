@@ -305,7 +305,7 @@ drop(n: Nat, xs: String): String
 //take(3, c) ->  "tex"
 take(n: Nat xs: String): String
   case n {
-    zero: xs
+    zero: String.nil
     succ: case xs {
       nil: String.nil
       cons: String.cons(xs.head, take(n.pred, xs.tail))
@@ -319,12 +319,18 @@ take(n: Nat xs: String): String
 //slice(2, 4, b) -> "ll"
 //slice(1, 3, c) -> "ex"
 slice(n: Nat, x: Nat, xs: String): String
-  ?stringslice
+  case xs {
+    nil: String.nil
+    cons: case drop(n, xs){
+      nil: String.nil
+      cons: take(Nat.sub(x, n), drop(n, xs))
+    }
+  }
 
 
 // Final Boss
-
-
+// Sem comentarios essa função
+// Usando o modo robas pra sair disso
 
 // Divides the elements of a String into a list, using a match you decide
 
@@ -332,37 +338,59 @@ slice(n: Nat, x: Nat, xs: String): String
 //split("Split example with matching space", " ") -> ["Split,example,with,matching,space]
 //split("You are awesome!", " ")                  -> ["You","are","awesome!"]
 split(xs: String, match: String): List<String>
-  ?split
+  split_go(xs, match, String.nil)
 
+split_go(xs: String, match: String, acum: String): List<String>
+  case xs {
+    nil: List.cons<String>(acum, List.nil<String>)
+    cons: case split_go_achaomath(xs, match){
+      true:  
+        let sobra = drop(length_string(match, Nat.zero), xs)
+        List.cons<String>(acum, split_go(sobra, match, String.nil))
+      false: 
+        let gravaohead = String.cons(xs.head, String.nil)
+        split_go(xs.tail, match, concat(acum, gravaohead))
+    }
+  }
 
+split_go_achaomath(xs: String, match: String): Bool
+   case match {
+     nil: Bool.true
+     cons: case xs {
+       nil: Bool.false
+       cons: case equal(xs.head, match.head) {
+         true: split_go_achaomath(xs.tail, match.tail)
+         false: Bool.false
+       }
+     }
+   }
 
-ex_10: String // IO<Unit>
-let a = "HI"
-let b = "Hello"
-let c = "text"
-let liststr = List.cons<String>(a, List.cons<String>(b, List.cons<String>(c, List.nil<String>)))
-//concat(a, b)
-flatten(liststr)
+length_string(xs: String, n: Nat): Nat
+  case xs {
+    nil: Nat.zero
+    cons: length_string(xs.tail, Nat.succ(n))
+  }
 
-//  IO {
-//    Tests._10.is_upper(is_upper)
-//    Tests._10.is_lower(is_lower)
-//    Tests._10.is_digit(is_digit)
-//    Tests._10.equal(equal)
-//    Tests._10.to_digit(to_digit)
-//    Tests._10.to_lower(to_lower)
-//    Tests._10.to_upper(to_upper)
-//    Tests._10.concat(concat)
-//    Tests._10.drop(drop)
-//    Tests._10.take(take)
-//    Tests._10.slice(slice)
-//    Tests._10.filter(filter)
-//   Tests._10.map(map)
-//    Tests._10.string_to_upper(string_to_upper)
-//    Tests._10.to_bits(to_bits)
-//    Tests._10.stringequal(stringequal)
-//    Tests._10.is_nat(is_nat)
-//    Tests._10.take_while(take_while)
-//    Tests._10.find(find) 
-//    Tests._10.flatten(flatten)
-//  }
+ex_10: IO<Unit>
+  IO {
+    Tests._10.is_upper(is_upper)
+    Tests._10.is_lower(is_lower)
+    Tests._10.is_digit(is_digit)
+    Tests._10.equal(equal)
+    Tests._10.to_digit(to_digit)
+    Tests._10.to_lower(to_lower)
+    Tests._10.to_upper(to_upper)
+    Tests._10.concat(concat)
+    Tests._10.drop(drop)
+    Tests._10.take(take)
+    Tests._10.slice(slice)
+    Tests._10.filter(filter)
+    Tests._10.map(map)
+    Tests._10.string_to_upper(string_to_upper)
+    Tests._10.to_bits(to_bits)
+    Tests._10.stringequal(stringequal)
+    Tests._10.is_nat(is_nat)
+    Tests._10.take_while(take_while)
+    Tests._10.find(find) 
+    Tests._10.flatten(flatten)
+  }
