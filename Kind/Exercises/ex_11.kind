@@ -92,16 +92,10 @@ map<A: Type, B: Type>(fn: A -> B, lm: ListMap<A>): ListMap<B>
     cons:  ListMap.cons<B>(Pair.new<B>(lm.head.fst, fn(lm.head.snd), map<A, B>(fn, lm.tail)))
   }
 
-// Runs x gets and y sets
-stress_test(sets: Nat, gets: Nat): String
-  let map = ListMap.empty!
-  for i from 0 to sets with map:
-    set<Nat>(i, 50, map)
-  let text = "test"
-  for i from 0 to gets with text:
-    let get = get<Nat>(i, map)
-    text
-  text
+
+
+stress_test(sets: Nat, gets: Nat): IO<Unit>
+  Tests.stress.lmap(sets, gets)
 
 ex_11: IO<Unit>
   IO {

@@ -1,0 +1,142 @@
+//-----------------------------------------------------------------------------
+// ListMap
+
+
+type ListMap<A: Type> { 
+  empty
+  cons(head: Pair<Nat, A>, tail: ListMap<A>)
+}
+
+//Do not edit below this line
+
+//This code does a stress test on the ListMap Set and Get functions
+
+// Runs x gets and y sets
+
+
+Tests.stress.lmap(sets: Nat, gets: Nat): IO<Unit>
+  IO { 
+    let val             = Maybe.none<Nat>
+    let map             = ListMap.empty<Nat>
+    get set_start_timer = IO.get_time
+    let map             = stress.lmap.sets(sets, map)
+    get set_final_timer = IO.get_time
+    let get             = stress.lmap.gets(gets, val, map)
+    get get_final_timer = IO.get_time
+
+    let sx              = Nat.to_f64(set_start_timer)
+    let gx              = Nat.to_f64(get_final_timer)
+    let y               = Nat.to_f64(set_final_timer)
+
+    let set_total_time  = F64.div(F64.sub(y, sx), 1000)
+    let get_total_time  = F64.div(F64.sub(gx, y), 1000)
+
+    IO.print("Done a total of "| Nat.show(sets)| " sets and took average "| F64.show(set_total_time)| " seconds")
+    IO.print("Done a total of "| Nat.show(gets)| " gets and took average "| F64.show(get_total_time)| " seconds")
+  }
+
+
+stress.lmap.sets(sets: Nat, map: ListMap<Nat>): ListMap<Nat>
+  case sets { 
+    zero: map
+    succ:
+      let map = Tests.stress.lmap.set<Nat>(sets, 1,  map)
+      stress.lmap.sets(sets.pred, map)
+  }
+
+
+stress.lmap.gets(gets: Nat, val: Maybe<Nat>, map: ListMap<Nat>): ListMap<Nat>
+  case gets { 
+    zero: map
+    succ:
+      let val = Tests.stress.lmap.get<Nat>(gets, map)
+      stress.lmap.gets(gets.pred, val, map)
+  }
+
+
+Tests.stress.lmap.get<A: Type>(key: Nat, lm: ListMap<A>): Maybe<A>
+  case lm { 
+    empty: Maybe.none<A>
+    cons:  
+      let map_key = lm.head@fst
+      let result  = lm.head@snd
+      case Nat.eql(key, map_key) { 
+        true:  Maybe.some<A>(result)
+        false: Tests.stress.lmap.get<A>(key, lm.tail)
+      }
+  }
+
+
+
+Tests.stress.lmap.set<A: Type>(key: Nat, value: A, lm: ListMap<A>): ListMap<A>
+  let new_pair = Pair.new<Nat, A>(key, value)
+  case lm { 
+    empty: ListMap.cons<A>(new_pair, lm)
+    cons:  
+      let map_key = lm.head@fst
+      case Nat.eql(key, map_key) {
+        true:  ListMap.cons<A>(new_pair, lm.tail)
+        false: ListMap.cons<A>(lm.head, Tests.stress.lmap.set<A>(key, value, lm.tail))
+      }
+  }
+
+
+
+//-----------------------------------------------------------------------------
+// BitsMap 
+
+//Do not edit below this line
+
+//This code does a stress test on the BitsMap Set and Get functions
+
+
+//If the timme doesn't feel right, the timer only considers the time it took to
+//set and get, there are other functions runing that doesn't increase to the
+//timer, but it might take a little bit longer to run
+
+Tests.stress.bmap(sets: Nat, gets: Nat): IO<Unit>
+  IO { 
+    let key             = Bits.e
+    let map             = BitsMap.new<Nat>
+    let val             = Maybe.none<Nat>
+    get set_start_timer = IO.get_time
+    let map             = stress.bmap.sets(sets, key, map)
+    get set_final_timer = IO.get_time
+    let get             = stress.bmap.gets(gets, key, val, map)
+    get get_final_timer = IO.get_time
+
+    let sx              = Nat.to_f64(set_start_timer)
+    let gx              = Nat.to_f64(get_final_timer)
+    let y               = Nat.to_f64(set_final_timer)
+
+    let set_total_time  = F64.div(F64.sub(y, sx), 1000)
+    let get_total_time  = F64.div(F64.sub(gx, y), 1000)
+
+    IO.print("Done a total of "| Nat.show(sets)| " sets and took average "| F64.show(set_total_time)| " seconds")
+    IO.print("Done a total of "| Nat.show(gets)| " gets and took average "| F64.show(get_total_time)| " seconds")
+  }
+
+
+
+// Function that makes a n number of gets on a BitsMap of Nat
+stress.bmap.sets(sets: Nat, key: Bits,  map: BitsMap<Nat>): BitsMap<Nat>
+  case sets { 
+    zero: map
+    succ: 
+      let key       = Bits.inc(key)
+      let map   = BitsMap.set<Nat>(key, sets, map)
+      stress.bmap.sets(sets.pred, key, map)
+  }
+
+
+
+//Function that makes a n number of sets into a new BitsMap of the type Nat
+stress.bmap.gets(gets: Nat, key: Bits, val: Maybe<Nat>, map: BitsMap<Nat>): BitsMap<Nat>
+  case gets { 
+    zero: map
+    succ: 
+      let key   = Bits.inc(key)
+      let val   = BitsMap.get<Nat>(key, map)
+      stress.bmap.gets(gets.pred, key, val, map)
+  }
+//-----------------------------------------------------------------------------

@@ -1,0 +1,89 @@
+type BitsMap<A: Type> { 
+  new
+  tie(val: Maybe<A>, lft: BitsMap<A>, rgt: BitsMap<A>)
+}
+
+// Given a Key and a Value, sets the given value to that key in the tree
+// Creates new keys if they don't already exist in the map
+// If there already is a value for the given key, updates it.
+
+set<A: Type>(key: Bits, val: A, map: BitsMap<A>): BitsMap<A>
+  ?set
+
+
+
+// Given a key, gets the value that correspond to the given key, 
+// If there it is no value for the key, returns Maybe.none<A>
+
+get<A: Type>(key: Bits, map:BitsMap<A>): Maybe<A>
+  ?get
+
+
+//Applies a function to a Value of the specific key and returns the same map but
+//with the specific value applied to the function
+//If the value isn't found, this function doesn't change the map
+
+mut<A: Type>(key: Bits, fn: A -> A, map: BitsMap<A>): BitsMap<A>
+  ?mut
+
+
+//Deletes a Value of the map within the given key
+//Returns the same map if no value is found for that key
+
+//Receives:
+  // key of the type Bits
+  // map of the type BitsMap<A>
+  // returns the modified BitsMap<A>
+
+//del<A: Type>(...)
+
+
+//Returns whether or not the map has a value for a given key
+//When there is a value, returns true
+//When there is no value or the key is not in the map, returns false
+//Receives:
+  // key of the type Bits
+  // map of the type BitsMap<A>
+  // returns a Bool
+
+//has...
+
+
+
+//Verifies all values of the map and if they don't match the condition gets
+//removed, if the condition is matched, the value and the key are kept
+
+
+filter<A: Type>(cond: A -> Bool, map: BitsMap<A>): BitsMap<A>
+  ?filter
+
+
+
+//Applies a function to  all values of the map and returns the map modified 
+
+map<A: Type, B: Type>(fn: A -> B, bitsmap: BitsMap<A>): BitsMap<B>
+  ?map
+
+
+
+// Returns a list of keys with all Keys of the map
+
+key<A: Type>(map: BitsMap<A>): List<Bits>
+  ?key
+
+
+
+// Unites two different maps into one, keeping its structure
+// When both maps have values for the same key, keeps the one from a
+
+union<A: Type>(a: BitsMap<A>, b: BitsMap<A>): BitsMap<A>
+  ?union
+
+
+//Stress Test for BitsMap
+
+stress_test(sets: Nat, gets: Nat): IO<Unit>
+  Tests.stress.bmap(sets, gets)
+
+ex_12:_
+  stress_test(1000000, 1000000)

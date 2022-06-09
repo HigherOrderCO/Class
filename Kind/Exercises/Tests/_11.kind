@@ -1,3 +1,8 @@
+type ListMap <A: Type> { 
+  empty
+  cons(head: Pair<Nat, A>, tail: ListMap<A>)
+}
+
 lm: ListMap<Nat>
   ListMap.empty<Nat>
 
@@ -8,36 +13,81 @@ lm2: ListMap<Nat>
   ListMap.cons<Nat>({1, 2}, ListMap.empty<Nat>)
 
 TestMap: ListMap<Nat>
-  ListMap.cons<Nat>(({0, 5})
-  ListMap.cons<Nat>(({1, 6})
-  ListMap.cons<Nat>(({2, 7})
-  ListMap.cons<Nat>(({3, 8})
-  ListMap.cons<Nat>(({4, 9})
+  ListMap.cons<Nat>(({0,  5})
+  ListMap.cons<Nat>(({1,  6})
+  ListMap.cons<Nat>(({2,  7})
+  ListMap.cons<Nat>(({3,  8})
+  ListMap.cons<Nat>(({4,  9})
   ListMap.cons<Nat>(({5, 10})
   ListMap.empty<Nat>))))))
 
+TestMapShow: ListMap<String>
+  ListMap.cons<String>(({0,  "5"})
+  ListMap.cons<String>(({1,  "6"})
+  ListMap.cons<String>(({2,  "7"})
+  ListMap.cons<String>(({3,  "8"})
+  ListMap.cons<String>(({4,  "9"})
+  ListMap.cons<String>(({5, "10"})
+  ListMap.empty<String>))))))
+
+TestMapmut1: ListMap<Nat>
+  ListMap.cons<Nat>(({0,  5})
+  ListMap.cons<Nat>(({1,  7})
+  ListMap.cons<Nat>(({2,  7})
+  ListMap.cons<Nat>(({3,  8})
+  ListMap.cons<Nat>(({4,  9})
+  ListMap.cons<Nat>(({5, 10})
+  ListMap.empty<Nat>))))))
+
+TestMapw: ListMap<Nat>
+  ListMap.cons<Nat>(({6,   6})
+  ListMap.cons<Nat>(({13, 30})
+  ListMap.cons<Nat>(({26, 15})
+  ListMap.cons<Nat>(({42, 60})
+  ListMap.cons<Nat>(({40, 40})
+  ListMap.cons<Nat>(({9,  14})
+  ListMap.empty<Nat>))))))
+
+  TestMapWDouble: ListMap<Nat>
+  ListMap.cons<Nat>(({6,   12})
+  ListMap.cons<Nat>(({13,  60})
+  ListMap.cons<Nat>(({26,  30})
+  ListMap.cons<Nat>(({42, 120})
+  ListMap.cons<Nat>(({40,  80})
+  ListMap.cons<Nat>(({9,   28})
+  ListMap.empty<Nat>))))))
+
+TestMapwmutdbl26: ListMap<Nat>
+  ListMap.cons<Nat>(({6,   6})
+  ListMap.cons<Nat>(({13, 30})
+  ListMap.cons<Nat>(({26, 30})
+  ListMap.cons<Nat>(({42, 60})
+  ListMap.cons<Nat>(({40, 40})
+  ListMap.cons<Nat>(({9,  14})
+  ListMap.empty<Nat>))))))
+
 TestMapSet: ListMap<Nat>
-  ListMap.cons<Nat>(({0, 5})
-  ListMap.cons<Nat>(({1, 6})
-  ListMap.cons<Nat>(({2, 7})
+  ListMap.cons<Nat>(({0,  5})
+  ListMap.cons<Nat>(({1,  6})
+  ListMap.cons<Nat>(({2,  7})
   ListMap.cons<Nat>(({3, 12})
-  ListMap.cons<Nat>(({4, 9})
+  ListMap.cons<Nat>(({4,  9})
   ListMap.cons<Nat>(({5, 10})
   ListMap.empty<Nat>))))))
 
 
 TestMapSucc: ListMap<Nat>
-  ListMap.cons<Nat>(({0, 6})
-  ListMap.cons<Nat>(({1, 7})
-  ListMap.cons<Nat>(({2, 8})
-  ListMap.cons<Nat>(({3, 9})
+  ListMap.cons<Nat>(({0,  6})
+  ListMap.cons<Nat>(({1,  7})
+  ListMap.cons<Nat>(({2,  8})
+  ListMap.cons<Nat>(({3,  9})
   ListMap.cons<Nat>(({4, 10})
   ListMap.cons<Nat>(({5, 11})
   ListMap.empty<Nat>))))))
 
 TestMapEven: ListMap<Nat>
-  ListMap.cons<Nat>(({1, 6})
-  ListMap.cons<Nat>(({3, 8})
+  ListMap.cons<Nat>(({1,  6})
+  ListMap.cons<Nat>(({3,  8})
   ListMap.cons<Nat>(({5, 10})
   ListMap.empty<Nat>)))
 
@@ -48,6 +98,38 @@ TestMapOdd: ListMap<Nat>
   ListMap.cons<Nat>(({4, 9})
   ListMap.empty<Nat>)))
 
+TestMapBool: ListMap<Bool>
+  ListMap.cons<Bool>(({0, Bool.false})
+  ListMap.cons<Bool>(({1, Bool.false})
+  ListMap.cons<Bool>(({2,  Bool.true})
+  ListMap.cons<Bool>(({3, Bool.false})
+  ListMap.cons<Bool>(({4,  Bool.true})
+  ListMap.cons<Bool>(({5,  Bool.true})
+  ListMap.empty<Bool>))))))
+
+TestMapBoolMutNot4: ListMap<Bool>
+  ListMap.cons<Bool>(({0, Bool.false})
+  ListMap.cons<Bool>(({1, Bool.false})
+  ListMap.cons<Bool>(({2,  Bool.true})
+  ListMap.cons<Bool>(({3, Bool.false})
+  ListMap.cons<Bool>(({4, Bool.false})
+  ListMap.cons<Bool>(({5,  Bool.true})
+  ListMap.empty<Bool>))))))
+
+  TestMapBoolfilternot: ListMap<Bool>
+  ListMap.cons<Bool>(({0, Bool.false})
+  ListMap.cons<Bool>(({1, Bool.false})
+  ListMap.cons<Bool>(({3, Bool.false})
+  ListMap.empty<Bool>)))
+
+  TestMapBoolMapNot: ListMap<Bool>
+  ListMap.cons<Bool>(({0,   Bool.true})
+  ListMap.cons<Bool>(({1,   Bool.true})
+  ListMap.cons<Bool>(({2,  Bool.false})
+  ListMap.cons<Bool>(({3,   Bool.true})
+  ListMap.cons<Bool>(({4,  Bool.false})
+  ListMap.cons<Bool>(({5,  Bool.false})
+  ListMap.empty<Bool>))))))
 
 Tests._11.set(set: <A: Type> -> Nat -> A -> ListMap<A> -> ListMap<A>): IO<Unit>
   IO {
@@ -59,32 +141,43 @@ Tests._11.set(set: <A: Type> -> Nat -> A -> ListMap<A> -> ListMap<A>): IO<Unit>
 
 Tests._11.get(get: <A: Type> -> Nat -> ListMap<A> -> Maybe<A>): IO<Unit>
   IO {
-    Assert.maybe<Nat>(Assert.nat.funcs, "get 1 1 TestMap", get<Nat>(1, TestMap), Maybe.some<Nat>(6))
+    Assert.maybe<Nat>(Assert.nat.funcs, "get 1 TestMap",   get<Nat>(1,   TestMap),  Maybe.some<Nat>(6))
+    Assert.maybe<Nat>(Assert.nat.funcs, "get 6 TestMap",   get<Nat>(6,   TestMap),     Maybe.none<Nat>)
+    Assert.maybe<Nat>(Assert.nat.funcs, "get 4 TestMap",   get<Nat>(4,   TestMap),  Maybe.some<Nat>(9))
+    Assert.maybe<Nat>(Assert.nat.funcs, "get 42 TestMapw", get<Nat>(42, TestMapw), Maybe.some<Nat>(60))
     IO.print("get: All terms tested")
   }
 
 Tests._11.mut(mut: <A: Type> -> Nat -> (A -> A) -> ListMap<A> -> ListMap<A>): IO<Unit>
   IO {
-    Assert.listmap<Nat>(Assert.nat.funcs, "mut 1 Nat.succ TestMap", mut<Nat>(1, Nat.succ, lm1), lm2)
+    Assert.listmap<Nat>(Assert.nat.funcs, "mut 1 Nat.succ TestMap",    mut<Nat>(1,  Nat.succ,   TestMap),            TestMapmut1)
+    Assert.listmap<Nat>(Assert.nat.funcs, "mut 6 Nat.succ TestMap",    mut<Nat>(6,  Nat.succ,   TestMap),                TestMap)
+    Assert.listmap<Bool>(Assert.bool.funcs, "mut 4 Bool.not TestMap",  mut<Bool>(4, Bool.not,   TestMapBool), TestMapBoolMutNot4)
+    Assert.listmap<Nat>(Assert.nat.funcs, "mut 26 Nat.double TestMap", mut<Nat>(26, Nat.double, TestMapw),      TestMapwmutdbl26)
     IO.print("mut: All terms tested")
   }
 
 Tests._11.has(has: <A: Type> -> Nat -> ListMap<A> -> Bool): IO<Unit>
   IO {
-    Assert.bool("has 1 TestMap", has<Nat>(1, TestMap), true)
-    Assert.bool("has 100 TestMap", has<Nat>(100, TestMap), false)
+    Assert.bool("has 1 TestMap",   has<Nat>(  1, TestMap),     true)
+    Assert.bool("has 100 TestMap", has<Nat>(100, TestMap),    false)
+    Assert.bool("has 0 TestMap",   has<Bool>( 3, TestMapBool), true)
     IO.print("has: All terms tested")
   }
 
 Tests._11.filter(filter: <A: Type> -> (A -> Bool) -> ListMap<A> -> ListMap<A>): IO<Unit>
   IO {
-    Assert.listmap<Nat>(Assert.nat.funcs, "filter Nat.odd TestMap", filter<Nat>(Nat.odd, TestMap), TestMapOdd)
-    Assert.listmap<Nat>(Assert.nat.funcs, "filter Nat.is_even TestMap", filter<Nat>(Nat.is_even, TestMap), TestMapEven)
+    Assert.listmap<Nat>(Assert.nat.funcs, "filter Nat.odd TestMap",     filter<Nat>(Nat.odd,     TestMap),               TestMapOdd)
+    Assert.listmap<Nat>(Assert.nat.funcs, "filter Nat.is_even TestMap", filter<Nat>(Nat.is_even, TestMap),              TestMapEven)
+    Assert.listmap<Bool>(Assert.bool.funcs, "filter Bool.not TestMap",  filter<Bool>(Bool.not,   TestMapBool), TestMapBoolfilternot)
     IO.print("filter: All terms tested")
   }
 
-Tests._11.map(map: <A: Type> -> (A -> A) -> ListMap<A> -> ListMap<A>): IO<Unit>
+Tests._11.map(map: <A: Type> -> <B: Type> -> (A -> B) -> ListMap<A> -> ListMap<B>): IO<Unit>
   IO {
-    Assert.listmap<Nat>(Assert.nat.funcs, "map Nat.succ TestMap", map<Nat>(Nat.succ, TestMap), TestMapSucc)
+    Assert.listmap<Nat>(Assert.nat.funcs, "map Nat.succ TestMap",        map<Nat, Nat>(Nat.succ,        TestMap),       TestMapSucc)
+    Assert.listmap<Nat>(Assert.nat.funcs, "map Nat.double TestMapw",     map<Nat, Nat>(Nat.double,     TestMapw),    TestMapWDouble)
+    Assert.listmap<Bool>(Assert.bool.funcs, "map Bool.not TestMapBool",  map<Bool, Bool>(Bool.not,  TestMapBool), TestMapBoolMapNot)
+    Assert.listmap<String>(Assert.string.funcs, "map Nat.show TestMap",  map<Nat, String>(Nat.show,     TestMap),       TestMapShow)
     IO.print("map: All terms tested")
   }
