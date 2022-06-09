@@ -9,17 +9,56 @@ type ListMap <A: Type> {
 // If the key is already present, its value is updated
 // If the key is not present, the value is added to the map
 set<A: Type>(key: Nat, value: A, lm: ListMap<A>): ListMap<A>
-  ?set
+  case lm {
+    empty: ListMap.empty<A>
+    cons:  case key {
+      zero: ListMap.cons<A>(Pair.new<A>(key, value), lm.tail)
+      succ: ListMap.cons<A>(lm.head, set<A>(key.pred, value, lm.tail))
+    }
+  }
+
+//ListMap.cons<A>(Pair.new<A>(0, 0), ListMap.cons<A>(Pair.new<A>(1, 1), ListMap.cons<A>(Pair.new<A>(2, 2), ListMap.empty<A>)
+// Primeiro tentativa nao deu muito certo, eu me enrolei e desisti desse caminho
+  // case lm {
+  //   empty: ListMap.empty<A>
+  //   cons:  case lm.head {
+  //     new: case lm.head.tail {
+  //       empty: case Nat.eql(lm.head, key) {
+  //         true:  ListMap.cons<A>(
+  //         false: ListMap.cons<A>(Pair.new<A>(key, value), List.concat<A>(lm.head, acum)
+  //       }
+  //       cons: 
+  //     }
+      
+  //       case Nat.eql(lm.head.fst, key){
+  //       true:  ListMap.cons<A>(Pair.new(key, value), List.concat(acum, lm.tail)
+  //       false: set_go<A>(key, value, lm.tail, List.concat(lm.head, acum))
+
+  //     }
+  //   }
+  // }
 
 // Returns a Value from a Key
 // If the key is not present, returns None
 get<A: Type>(key: Nat, lm: ListMap<A>): Maybe<A>
-  ?get
+  case lm {
+    empty: Maybe.none<A>
+    cons:  case key {
+      zero: Maybe.some<A>(lm.head)
+      succ: get<A>(key.pred, lm.tail)
+    }
+  }
 
 // Applies a function to a Value from a Key
 // Returns the same ListMap if the key is not present 
 mut<A: Type>(key: Nat, fn: A -> A, lm: ListMap<A>): ListMap<A>
-  ?mut
+  case lm {
+    empty: ListMap.empty<A>
+    cons:  case key {
+      zero: ListMap.cons<A>(Pair.new<A>(lm.head.fst, fn(lm.head.snd), lm.tail))
+      succ: ListMap.cons<A>(lm.head, mut<A>(key.pred, fn, lm.tail))
+    }
+  }
 
 // Converts the ListMap to a String
 show<A: Type>(fn: A -> String, lm: ListMap<A>): String
@@ -28,15 +67,30 @@ show<A: Type>(fn: A -> String, lm: ListMap<A>): String
 // Checks if the ListMap has a key
 // Returns true if the key is present, false otherwise
 has<A:Type>(key: Nat, lm: ListMap<A>): Bool
-  ?has
+  case lm {
+    empty: Bool.false
+    cons: case key {
+      zero: Bool.true
+      succ: has<A>(key.pred, lm.tail)
+    }
+  }
 
 // Removes all Elements that doesn't satisfy a condition
 filter<A: Type>(cond: A -> Bool, lm: ListMap<A>): ListMap<A>
-  ?filter
+  case lm {
+    empty: ListMap.empty<A>
+    cons:  case cond(lm.head) {
+      true:  ListMap.cons<A>(lm.head, filter<A>(cond, lm.tail))
+      false: filter<A>(cond, lm.tail)
+    }
+  }
 
 // Applies a function to all Values
-map<A: Type>(fn: A -> A, lm: ListMap<A>): ListMap<A>
-  ?map
+map<A: Type, B: Type>(fn: A -> B, lm: ListMap<A>): ListMap<B>
+  case lm {
+    empty: ListMap.empty<B>
+    cons:  ListMap.cons<B>(Pair.new<B>(lm.head.fst, fn(lm.head.snd), map<A, B>(fn, lm.tail)))
+  }
 
 // Runs x gets and y sets
 stress_test(sets: Nat, gets: Nat): String
